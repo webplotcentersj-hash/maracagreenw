@@ -18,6 +18,7 @@ export function HeroSection() {
   // Estados para el flujo de conexión en React
   const [status, setStatus] = useState<'idle' | 'connecting' | 'connected'>('idle');
   const [gsapLoaded, setGsapLoaded] = useState(false);
+  const [showPdf, setShowPdf] = useState(false);
 
   // Cargar GSAP dinámicamente para evitar errores de bundler
   useEffect(() => {
@@ -967,10 +968,20 @@ export function HeroSection() {
               
               <a 
                 href="#servicios" 
-                className="px-8 py-4 rounded-xl border border-white/20 bg-white/5 text-white font-sans font-semibold text-center hover:bg-white/10 hover:border-white/30 transition-all duration-300 backdrop-blur-sm"
+                className="px-8 py-4 rounded-xl border border-white/20 bg-white/5 text-white font-sans font-semibold text-center hover:bg-white/10 hover:border-white/30 transition-all duration-300 backdrop-blur-sm pointer-events-auto"
               >
                 Conocer Soluciones
               </a>
+
+              <button 
+                onClick={() => setShowPdf(true)}
+                className="px-8 py-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 font-sans font-semibold text-center hover:bg-emerald-500 hover:text-black transition-all duration-300 backdrop-blur-sm flex items-center justify-center gap-2 cursor-pointer pointer-events-auto shadow-lg"
+              >
+                <svg className="w-5 h-5 filter drop-shadow-[0_0_4px_rgba(16,185,129,0.4)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Ver Marca en PDF
+              </button>
             </div>
           </div>
         </div>
@@ -1039,6 +1050,42 @@ export function HeroSection() {
           </div>
         </div>
 
+      {/* Lector de PDF Modal */}
+      {showPdf && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md pointer-events-auto">
+          <div className="relative w-full max-w-5xl h-[88vh] bg-[#0a1218] rounded-2xl border border-slate-800 shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300">
+            {/* Header del Modal */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0e171e]">
+              <div className="flex items-center gap-3">
+                <svg className="w-6 h-6 text-emerald-400 filter drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 className="font-bold text-sm md:text-base text-white font-mono tracking-wider uppercase">
+                  Manual de Identidad de Marca
+                </h3>
+              </div>
+              <button 
+                onClick={() => setShowPdf(false)}
+                className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-emerald-500/50 hover:bg-emerald-950/20 active:scale-95 transition-all duration-200 cursor-pointer"
+                aria-label="Cerrar Lector de PDF"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Cuerpo del Modal con el Iframe del Lector de PDF */}
+            <div className="flex-1 bg-[#061014] p-2 flex items-center justify-center relative">
+              <iframe 
+                src="/pdf/Manual%20de%20marca%20(1).pdf#toolbar=1&navpanes=0&scrollbar=1"
+                className="w-full h-full rounded-lg border-0 bg-transparent"
+                title="Lector de PDF - Manual de Marca"
+              />
+            </div>
+          </div>
+        </div>
+      )}
       </section>
     </div>
   );
