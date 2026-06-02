@@ -241,7 +241,7 @@ export default function Brand3DSection() {
           console.log('Video auto play/pause error:', e);
         }
       });
-    }, 100);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, [activeView, status]);
@@ -329,8 +329,9 @@ export default function Brand3DSection() {
     textureRedes2.colorSpace = THREE.SRGBColorSpace;
 
     const materialExec = new THREE.MeshStandardMaterial({
+      color: 0x000000,
       map: textureRedes1,
-      emissive: 0xffffff,
+      emissive: 0x000000,
       emissiveMap: textureRedes1,
       emissiveIntensity: 0,
       roughness: 0.2
@@ -395,8 +396,9 @@ export default function Brand3DSection() {
     textureOpen.magFilter = THREE.LinearFilter;
 
     const materialOpen = new THREE.MeshStandardMaterial({
+      color: 0x000000,
       map: textureOpen,
-      emissive: 0xffffff,
+      emissive: 0x000000,
       emissiveMap: textureOpen,
       emissiveIntensity: 0,
       roughness: 0.2
@@ -694,6 +696,7 @@ export default function Brand3DSection() {
           new THREE.PlaneGeometry(2.0, 1.125),
           leftPageMat
         );
+        leftPage.frustumCulled = false;
         leftPage.position.set(-1.0, 0, 0.01);
         leftPage.userData = { isBookPage: true, side: 'left' };
         interactiveScreens.push(leftPage);
@@ -708,6 +711,7 @@ export default function Brand3DSection() {
           new THREE.PlaneGeometry(2.0, 1.125),
           rightPageMat
         );
+        rightPage.frustumCulled = false;
         rightPage.position.set(1.0, 0, 0.01);
         rightPage.userData = { isBookPage: true, side: 'right' };
         interactiveScreens.push(rightPage);
@@ -722,6 +726,7 @@ export default function Brand3DSection() {
           new THREE.PlaneGeometry(2.0, 1.125),
           flipPageMat
         );
+        flipPage.frustumCulled = false;
         flipPage.position.set(1.0, 0, 0); 
         flipPageGroup.add(flipPage);
         bookGroup.add(flipPageGroup);
@@ -825,7 +830,8 @@ export default function Brand3DSection() {
         );
         screenBackCase.position.set(0, 0.4, 0);
 
-        const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.15, 0.65), screenOff);
+        const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.15, 0.65), materialExec);
+        screen.frustumCulled = false;
         screen.position.set(0, 0.4, 0.041); 
         screen.userData = {
           isExecScreen: true
@@ -1008,8 +1014,9 @@ export default function Brand3DSection() {
       // Display LCD de video
       const screen = new THREE.Mesh(
         new THREE.PlaneGeometry(0.50, 0.31), 
-        screenOff
+        materialOpen
       );
+      screen.frustumCulled = false;
       screen.position.set(0, 0.18, 0.008); 
       screenGroup.add(screen);
       openScreens.push(screen); 
@@ -1273,10 +1280,21 @@ export default function Brand3DSection() {
         
         for (let i = 0; i < 3; i++) { 
             for (let j = 0; j < 2; j++) { 
-                const mat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2 });
+                const screenIdx = nocScreenMats.length;
+                const isEven = (screenIdx % 2 === 0);
+                const initialTex = isEven ? textureCamionetaImg2 : textureCamionetaImg;
+                const mat = new THREE.MeshStandardMaterial({ 
+                    color: 0x000000, 
+                    roughness: 0.2,
+                    map: initialTex,
+                    emissive: 0x000000,
+                    emissiveMap: initialTex,
+                    emissiveIntensity: 0
+                });
                 nocScreenMats.push(mat);
                 
                 const screen = new THREE.Mesh(new THREE.PlaneGeometry(3.1, 1.8), mat);
+                screen.frustumCulled = false;
                 const border = new THREE.Mesh(new THREE.BoxGeometry(3.2, 1.9, 0.1), darkMetal);
                 
                 screen.position.set(-3.2 + i * 3.2, -1 + j * 1.9, 0.06);
@@ -1300,10 +1318,20 @@ export default function Brand3DSection() {
         
         for (let i = 0; i < 2; i++) {
             for (let j = 0; j < 2; j++) {
-                const mat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2 });
+                const screenIdx = nocScreenMats.length;
+                const initialTex = (screenIdx === 6 || screenIdx === 7) ? textureVpImg1 : textureVpImg2;
+                const mat = new THREE.MeshStandardMaterial({ 
+                    color: 0x000000, 
+                    roughness: 0.2,
+                    map: initialTex,
+                    emissive: 0x000000,
+                    emissiveMap: initialTex,
+                    emissiveIntensity: 0
+                });
                 nocScreenMats.push(mat); // Índices 6, 7, 8, 9
                 
                 const screen = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.2), mat);
+                screen.frustumCulled = false;
                 const border = new THREE.Mesh(new THREE.BoxGeometry(2.1, 1.3, 0.08), darkMetal);
                 
                 screen.position.set(-1.1 + i * 2.2, -0.7 + j * 1.4, 0.05);
@@ -1328,10 +1356,20 @@ export default function Brand3DSection() {
         
         for (let i = 0; i < 2; i++) {
             for (let j = 0; j < 2; j++) {
-                const mat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2 });
+                const screenIdx = nocScreenMats.length;
+                const initialTex = (screenIdx === 10 || screenIdx === 11) ? textureAgendaImg1 : textureAgendaImg2;
+                const mat = new THREE.MeshStandardMaterial({ 
+                    color: 0x000000, 
+                    roughness: 0.2,
+                    map: initialTex,
+                    emissive: 0x000000,
+                    emissiveMap: initialTex,
+                    emissiveIntensity: 0
+                });
                 nocScreenMats.push(mat); // Índices 10, 11, 12, 13
                 
                 const screen = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.2), mat);
+                screen.frustumCulled = false;
                 const border = new THREE.Mesh(new THREE.BoxGeometry(2.1, 1.3, 0.08), darkMetal);
                 
                 screen.position.set(-1.1 + i * 2.2, -0.7 + j * 1.4, 0.05);
@@ -1363,7 +1401,13 @@ export default function Brand3DSection() {
             deskGroup.add(chair);
 
             for(let k=0; k<3; k++) {
-                const mat = new THREE.MeshStandardMaterial({ color: 0x050505 });
+                const mat = new THREE.MeshStandardMaterial({ 
+                    color: 0x000000,
+                    map: textureNoc,
+                    emissive: 0x000000,
+                    emissiveMap: textureNoc,
+                    emissiveIntensity: 0
+                });
                 nocScreenMats.push(mat);
 
                 const monitorGroup = new THREE.Group();
@@ -1385,6 +1429,7 @@ export default function Brand3DSection() {
                 monitorBackCase.position.set(0, 0.3, 0);
 
                 const monitorScreen = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.5), mat);
+                monitorScreen.frustumCulled = false;
                 monitorScreen.position.set(0, 0.3, 0.021);
 
                 const mLedMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 1 });
@@ -1494,37 +1539,45 @@ export default function Brand3DSection() {
       const rightIdx = activeSpread * 2;
       
       if (leftIdx < 0) {
-        leftPageMat.map = null;
-        leftPageMat.color.setHex(0x11141a);
-        leftPageMat.emissive.setHex(0x000000);
-        leftPageMat.needsUpdate = true;
+        if (leftPageMat.map !== null) {
+          leftPageMat.map = null;
+          leftPageMat.color.setHex(0x11141a);
+          leftPageMat.emissive.setHex(0x000000);
+          leftPageMat.needsUpdate = true;
+        }
       } else {
         const tex = getOrLoadTexture(leftIdx, () => {
           leftPageMat.needsUpdate = true;
         });
-        leftPageMat.map = tex;
-        leftPageMat.color.setHex(0xffffff);
-        leftPageMat.emissive.setHex(0xffffff);
-        leftPageMat.emissiveMap = tex;
-        leftPageMat.emissiveIntensity = 0.6;
-        leftPageMat.needsUpdate = true;
+        if (leftPageMat.map !== tex) {
+          leftPageMat.map = tex;
+          leftPageMat.color.setHex(0xffffff);
+          leftPageMat.emissive.setHex(0xffffff);
+          leftPageMat.emissiveMap = tex;
+          leftPageMat.emissiveIntensity = 0.6;
+          leftPageMat.needsUpdate = true;
+        }
       }
       
       if (rightIdx >= manualPages.length) {
-        rightPageMat.map = null;
-        rightPageMat.color.setHex(0x11141a);
-        rightPageMat.emissive.setHex(0x000000);
-        rightPageMat.needsUpdate = true;
+        if (rightPageMat.map !== null) {
+          rightPageMat.map = null;
+          rightPageMat.color.setHex(0x11141a);
+          rightPageMat.emissive.setHex(0x000000);
+          rightPageMat.needsUpdate = true;
+        }
       } else {
         const tex = getOrLoadTexture(rightIdx, () => {
           rightPageMat.needsUpdate = true;
         });
-        rightPageMat.map = tex;
-        rightPageMat.color.setHex(0xffffff);
-        rightPageMat.emissive.setHex(0xffffff);
-        rightPageMat.emissiveMap = tex;
-        rightPageMat.emissiveIntensity = 0.6;
-        rightPageMat.needsUpdate = true;
+        if (rightPageMat.map !== tex) {
+          rightPageMat.map = tex;
+          rightPageMat.color.setHex(0xffffff);
+          rightPageMat.emissive.setHex(0xffffff);
+          rightPageMat.emissiveMap = tex;
+          rightPageMat.emissiveIntensity = 0.6;
+          rightPageMat.needsUpdate = true;
+        }
       }
     };
 
@@ -1882,11 +1935,12 @@ export default function Brand3DSection() {
 
           gsap.to(serverRoomLight, { intensity: 6, duration: 1 });
           
-          // Encendido secuencial y pulsado en cascada de todos los carteles luminosos de marca
+          // Encendido secuencial escalonado de logotipos sin GSAP (Cero CPU)
           const brandLogoMats = [logoMat, meetingLogoMat, execLogoMat, openLogoMat, nocLogoMat];
-          brandLogoMats.forEach(mat => {
-            gsap.to(mat, { emissiveIntensity: 2, duration: 0.5 });
-            gsap.to(mat, { emissiveIntensity: 1, duration: 1.5, delay: 0.5 });
+          brandLogoMats.forEach((mat, idx) => {
+            setTimeout(() => {
+              mat.emissiveIntensity = 1.0;
+            }, 500 + idx * 250);
           });
           
           // --- ENCENDIDO DE PANTALLAS DE PC CON VIDEOS ACTIVOS ---
@@ -1897,19 +1951,25 @@ export default function Brand3DSection() {
           gsap.to(meetingRoomLight, { intensity: 5, duration: 1.5, delay: 1 });
           
           // 2. Oficina Ejecutiva
-          // Asignar el material pre-creado y animar su brillo para evitar shader compilation lag
-          execOffice.screen.material = materialExec;
-          gsap.to(materialExec, { emissiveIntensity: 0.8, duration: 0.5 });
+          setTimeout(() => {
+            materialExec.color.setHex(0xffffff);
+            materialExec.emissive.setHex(0xffffff);
+            materialExec.emissiveIntensity = 0.8;
+          }, 1200);
           gsap.to(execOfficeLight, { intensity: 8, duration: 1.5, delay: 1.2 });
-          gsap.to(execLampMat, { emissiveIntensity: 2, duration: 1, delay: 1.4 });
+          
+          setTimeout(() => {
+            execLampMat.emissive.setHex(0xfff8e7);
+            execLampMat.emissiveIntensity = 2.0;
+          }, 1400);
 
           // 3. Open Space Escritorios
-          // Asignar el material pre-creado y animar su brillo para evitar shader compilation lag
           gsap.to(openSpaceLight, { intensity: 6, duration: 1.5, delay: 0.5 });
-          openScreens.forEach((scr, index) => {
-              scr.material = materialOpen;
-          });
-          gsap.to(materialOpen, { emissiveIntensity: 0.6, duration: 0.5 });
+          setTimeout(() => {
+            materialOpen.color.setHex(0xffffff);
+            materialOpen.emissive.setHex(0xffffff);
+            materialOpen.emissiveIntensity = 0.6;
+          }, 500);
 
           // 4. Sala NOC (Centro de Operaciones) con Video Wall Inteligente
           // La reproducción de videos se maneja de manera centralizada en el useEffect de activeView,
@@ -1918,127 +1978,19 @@ export default function Brand3DSection() {
           gsap.to(nocLight, { intensity: 6, duration: 1.5, delay: 0.7 });
           const techColors = [0x0ea5e9, 0x10b981, 0x3b82f6]; // Colores de red
           nocScreenMats.forEach((mat, index) => {
-              if (index === 0) {
-                  // Pantalla inferior izquierda: imagen estática 2
-                  mat.map = textureCamionetaImg2;
-                  mat.emissiveMap = textureCamionetaImg2;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 1) {
-                  // Pantalla superior izquierda: imagen estática 1
-                  mat.map = textureCamionetaImg;
-                  mat.emissiveMap = textureCamionetaImg;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 2) {
-                  // Pantalla inferior central: imagen estática por defecto en MAIN
-                  mat.map = textureCamionetaImg2;
-                  mat.emissiveMap = textureCamionetaImg2;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 3) {
-                  // Pantalla superior central: imagen estática por defecto en MAIN
-                  mat.map = textureCamionetaImg;
-                  mat.emissiveMap = textureCamionetaImg;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 4) {
-                  // Pantalla inferior derecha: imagen estática por defecto en MAIN
-                  mat.map = textureCamionetaImg2;
-                  mat.emissiveMap = textureCamionetaImg2;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 5) {
-                  // Pantalla superior derecha: imagen estática por defecto en MAIN
-                  mat.map = textureCamionetaImg;
-                  mat.emissiveMap = textureCamionetaImg;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 6) {
-                  // Pantalla lateral inferior izquierda: imagen estática por defecto en MAIN
-                  mat.map = textureVpImg1;
-                  mat.emissiveMap = textureVpImg1;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 7) {
-                  // Pantalla lateral superior izquierda: imagen casco 01
-                  mat.map = textureVpImg1;
-                  mat.emissiveMap = textureVpImg1;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 8) {
-                  // Pantalla lateral inferior derecha: imagen estática por defecto en MAIN
-                  mat.map = textureVpImg2;
-                  mat.emissiveMap = textureVpImg2;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 9) {
-                  // Pantalla lateral superior derecha: imagen casco 02
-                  mat.map = textureVpImg2;
-                  mat.emissiveMap = textureVpImg2;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 10) {
-                  // Pantalla lateral opuesta (Sur) inferior izquierda: imagen estática por defecto en MAIN
-                  mat.map = textureAgendaImg1;
-                  mat.emissiveMap = textureAgendaImg1;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 11) {
-                  // Pantalla lateral opuesta (Sur) superior izquierda: Agenda imagen 1
-                  mat.map = textureAgendaImg1;
-                  mat.emissiveMap = textureAgendaImg1;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 12) {
-                  // Pantalla lateral opuesta (Sur) inferior derecha: imagen estática por defecto en MAIN
-                  mat.map = textureAgendaImg2;
-                  mat.emissiveMap = textureAgendaImg2;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
-              } else if (index === 13) {
-                  // Pantalla lateral opuesta (Sur) superior derecha: Agenda imagen 2
-                  mat.map = textureAgendaImg2;
-                  mat.emissiveMap = textureAgendaImg2;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.0, duration: 0.4, delay: 1 });
-                  mat.emissive.setHex(0xffffff);
-                  mat.color.setHex(0xffffff);
+              if (index >= 0 && index <= 13) {
+                  setTimeout(() => {
+                      mat.emissive.setHex(0xffffff);
+                      mat.emissiveIntensity = 1.0;
+                      mat.color.setHex(0xffffff);
+                  }, 1000 + Math.random() * 500);
               } else {
-                  // Pantallas del costado y monitores auxiliares muestran feeds generales de telemetría
                   const randColor = techColors[Math.floor(Math.random() * techColors.length)];
-                  mat.map = textureNoc;
-                  mat.emissiveMap = textureNoc;
-                  mat.needsUpdate = true;
-                  gsap.to(mat, { emissiveIntensity: 1.2, duration: 0.4, delay: 1 + (index * 0.1) });
-                  mat.emissive.setHex(randColor);
-                  mat.color.setHex(randColor);
+                  setTimeout(() => {
+                      mat.emissive.setHex(randColor);
+                      mat.emissiveIntensity = 1.2;
+                      mat.color.setHex(randColor);
+                  }, 1000 + (index * 50));
               }
           });
 
@@ -2128,6 +2080,7 @@ export default function Brand3DSection() {
       renderer.render(scene, camera);
     };
 
+    renderer.compile(scene, camera);
     animate();
 
     // OPTIMIZACIÓN DE UX: Slideshow automatizado de redes en la oficina ejecutiva
