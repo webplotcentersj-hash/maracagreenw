@@ -43,7 +43,7 @@ export function ProjectsVideoSection() {
           
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
             Ingeniería de campo en <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-blue to-brand-teal">
               plena ejecución técnica.
             </span>
           </h2>
@@ -73,7 +73,7 @@ export function ProjectsVideoSection() {
             </div>
             
             <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? "bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" : "bg-amber-500"}`}></span>
+              <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? "bg-emerald-500 animate-pulse shadow-[0_0_8px_#00c4f9]" : "bg-amber-500"}`}></span>
               <span className={isPlaying ? "text-emerald-400" : "text-amber-500"}>
                 {isPlaying ? "STATUS // REPRODUCIENDO_FEED" : "STATUS // STANDBY"}
               </span>
@@ -96,7 +96,7 @@ export function ProjectsVideoSection() {
             <div className={`absolute inset-0 bg-[#061014]/65 backdrop-blur-xs flex flex-col items-center justify-center transition-all duration-500 ease-out z-10 ${
               isPlaying ? "opacity-0 pointer-events-none scale-95" : "opacity-100 scale-100"
             }`}>
-              <div className="w-16 h-16 rounded-full border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.15)] group-hover:scale-110 group-hover:border-emerald-400 group-hover:shadow-[0_0_30px_rgba(16,185,129,0.35)] transition-all duration-300 relative">
+              <div className="w-16 h-16 rounded-full border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 flex items-center justify-center shadow-[0_0_20px_rgba(0, 196, 249,0.15)] group-hover:scale-110 group-hover:border-emerald-400 group-hover:shadow-[0_0_30px_rgba(0, 196, 249,0.35)] transition-all duration-300 relative">
                 <Play className="w-6 h-6 fill-emerald-400 translate-x-0.5" />
                 
                 {/* Glowing ring */}

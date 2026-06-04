@@ -1,404 +1,273 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { Zap, ShieldCheck, CheckCircle2, AlertTriangle, Eye, Lock, HardDrive, Bell, ArrowUpRight } from "lucide-react";
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Router,
+  Shield,
+  Server,
+  Phone,
+  Flame,
+  ScanSearch,
+  GlobeLock,
+  CheckCircle2,
+  ArrowRight,
+} from "lucide-react";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
-// Canvas visualizer for Left Card: Critical Energy (stable 50Hz sine wave oscilloscope)
-function OscilloscopeVisualizer() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let animId: number;
-    let time = 0;
+const serviceBlocks = [
+  {
+    icon: Router,
+    title: "Equipamiento de Redes",
+    color: "emerald",
+    items: [
+      "Definición, Suministro e Instalación de SWITCHES, ROUTERS, ACCESS POINT y cualquier otro Sistema de Gestión de Red y de Comunicación de Datos.",
+      "IP Telephony, VoIP.",
+    ],
+    bullets: ["Switches y routers", "Access Points", "Telefonía IP / VoIP"],
+  },
+  {
+    icon: Shield,
+    title: "Seguridad en Redes",
+    color: "cyan",
+    items: [
+      "Firewalls",
+      "Sistemas de protección contra intrusos (IPS)",
+      "Estudios de vulnerabilidad de Red",
+      "Control de acceso corporativo a Internet",
+    ],
+    bullets: ["Firewall", "IPS", "Pentesting / vulnerabilidades"],
+  },
+  {
+    icon: Server,
+    title: "Sistemas Operativos de Red (Microinformática)",
+    color: "emerald",
+    items: [
+      "Nuestro personal está calificado para instalar y configurar los sistemas operativos más utilizados: Windows Server, Novell, Unix, Linux.",
+      "Migración de Sistemas Operativos completos, con perfil de usuario, back-up y reinstalaciones.",
+    ],
+    bullets: ["Windows Server", "Linux / Unix", "Migración y backup"],
+  },
+];
 
-    const resize = () => {
-      if (!canvas) return;
-      canvas.width = canvas.parentElement?.clientWidth || 400;
-      canvas.height = 140;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const draw = () => {
-      if (!ctx || !canvas) return;
-      ctx.fillStyle = "rgba(8, 14, 20, 0.22)"; // smooth trails clearing
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Draw subtle oscillocope grid lines
-      ctx.strokeStyle = "rgba(245, 158, 11, 0.04)";
-      ctx.lineWidth = 1;
-      const gap = 20;
-      for (let x = 0; x < canvas.width; x += gap) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += gap) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
-      // Draw middle horizontal dashed line
-      ctx.strokeStyle = "rgba(245, 158, 11, 0.12)";
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath();
-      ctx.moveTo(0, canvas.height / 2);
-      ctx.lineTo(canvas.width, canvas.height / 2);
-      ctx.stroke();
-      ctx.setLineDash([]); // reset
-
-      // Draw real-time sine wave
-      ctx.beginPath();
-      ctx.strokeStyle = "#f59e0b"; // Amber color
-      ctx.shadowColor = "#f59e0b";
-      ctx.shadowBlur = 6;
-      ctx.lineWidth = 1.8;
-
-      for (let x = 0; x < canvas.width; x++) {
-        const frequency = 0.018;
-        const amplitude = 28 * Math.sin(x * 0.004 + time * 0.03); // dynamic amplitude modulation
-        const y = canvas.height / 2 + Math.sin(x * frequency - time * 0.12) * amplitude;
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.shadowBlur = 0; // reset glow
-
-      time += 0.25;
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="w-full h-full block rounded-xl z-10 relative" />;
-}
-
-// Canvas visualizer for Right Card: Electronic Security (revolving radar sweep with targets)
-function RadarVisualizer() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let animId: number;
-    let angle = 0;
-
-    const resize = () => {
-      if (!canvas) return;
-      canvas.width = canvas.parentElement?.clientWidth || 400;
-      canvas.height = 140;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    // Hardcode coordinate points for simulated CCTV / active security nodes
-    const targets = [
-      { r: 42, a: 1.1, size: 3.5, pulse: 0 },
-      { r: 80, a: 3.2, size: 4, pulse: 0 },
-      { r: 105, a: 5.3, size: 3.5, pulse: 0 }
-    ];
-
-    const draw = () => {
-      if (!ctx || !canvas) return;
-      ctx.fillStyle = "rgba(8, 14, 20, 0.18)"; // smooth trails clearing
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-
-      // Draw subtle grid lines
-      ctx.strokeStyle = "rgba(16, 185, 129, 0.04)";
-      ctx.lineWidth = 1;
-      const gap = 30;
-      for (let x = 0; x < canvas.width; x += gap) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += gap) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
-      // Draw concentric radar lines
-      ctx.strokeStyle = "rgba(16, 185, 129, 0.1)";
-      ctx.beginPath();
-      ctx.arc(cx, cy, 32, 0, Math.PI * 2);
-      ctx.arc(cx, cy, 64, 0, Math.PI * 2);
-      ctx.arc(cx, cy, 96, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Radar crosshair lines
-      ctx.strokeStyle = "rgba(16, 185, 129, 0.06)";
-      ctx.beginPath();
-      ctx.moveTo(cx - 120, cy); ctx.lineTo(cx + 120, cy);
-      ctx.moveTo(cx, cy - 70); ctx.lineTo(cx, cy + 70);
-      ctx.stroke();
-
-      // Calculate vector of the sweep line
-      const targetX = cx + Math.cos(angle) * 110;
-      const targetY = cy + Math.sin(angle) * 110;
-
-      // Draw glowing radar sweep line
-      ctx.strokeStyle = "rgba(16, 185, 129, 0.4)";
-      ctx.shadowColor = "#10b981";
-      ctx.shadowBlur = 4;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(targetX, targetY);
-      ctx.stroke();
-      ctx.shadowBlur = 0; // reset
-
-      // Update and draw radar nodes
-      targets.forEach(t => {
-        const tx = cx + Math.cos(t.a) * t.r;
-        const ty = cy + Math.sin(t.a) * t.r;
-
-        // Triggers glow active when the scanning vector sweeps by it
-        let diff = Math.abs(angle % (Math.PI * 2) - t.a);
-        if (diff > Math.PI) diff = Math.PI * 2 - diff;
-
-        if (diff < 0.12) {
-          t.pulse = 1.0;
-        }
-
-        if (t.pulse > 0) {
-          ctx.beginPath();
-          ctx.arc(tx, ty, t.size * (1 + (1 - t.pulse) * 1.6), 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(16, 185, 129, ${t.pulse * 0.4})`;
-          ctx.fill();
-
-          ctx.beginPath();
-          ctx.arc(tx, ty, t.size, 0, Math.PI * 2);
-          ctx.fillStyle = "#ffffff";
-          ctx.fill();
-
-          t.pulse -= 0.025; // fade out speed
-        } else {
-          // Draw dim standard inactive target
-          ctx.beginPath();
-          ctx.arc(tx, ty, t.size - 1, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(16, 185, 129, 0.2)";
-          ctx.fill();
-        }
-      });
-
-      // Scan sweeper head
-      ctx.beginPath();
-      ctx.arc(targetX, targetY, 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#10b981";
-      ctx.fill();
-
-      angle += 0.007; // speed of rotation
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="w-full h-full block rounded-xl z-10 relative" />;
-}
+const galleryImages = [
+  {
+    src: "/ss/Imagen13.png",
+    alt: "Switches, routers y equipamiento de red",
+    label: "Equipamiento activo",
+    span: "lg:col-span-2 lg:row-span-1",
+  },
+  {
+    src: "/ss/Imagen14.jpg",
+    alt: "Cableado estructurado bajo piso técnico",
+    label: "Cableado certificado",
+    span: "lg:col-span-2 lg:row-span-2",
+  },
+  {
+    src: "/ss/Imagen15.png",
+    alt: "Sistema de detección de intrusión perimetral",
+    label: "Seguridad perimetral",
+    span: "lg:col-span-2 lg:row-span-1",
+  },
+];
 
 export function EnergySecuritySection() {
-  const energyBenefits = [
-    { title: "Reducción de Interrupciones", desc: "Evita pérdidas financieras bloqueando cortes y micro-cortes instantáneos." },
-    { title: "Protección de Equipamiento", desc: "Disipa picos de tensión y ruido eléctrico comercial que desgastan tu hardware." },
-    { title: "Respaldo ante Apagones", desc: "Grupos electrógenos automáticos dimensionados para operar indefinidamente." },
-    { title: "Continuidad del Negocio", desc: "Mantén tus POS, ERPs, comunicaciones y servidores en funcionamiento permanente." }
-  ];
-
-  const securityServices = [
-    { icon: <Eye className="w-5 h-5 text-emerald-400" />, title: "Cámaras de Seguridad y CCTV IP", desc: "Cámaras profesionales con visión nocturna, analítica inteligente de comportamiento y grabación redundante." },
-    { icon: <Lock className="w-5 h-5 text-emerald-400" />, title: "Control de Acceso y Presencia", desc: "Sistemas biométricos, RFID y reconocimiento facial integrados a molinetes y puertas electromagnéticas." },
-    { icon: <Bell className="w-5 h-5 text-emerald-400" />, title: "Alarmas y Seguridad Perimetral", desc: "Sensores de movimiento, barreras infrarrojas y sistemas disuasivos conectados a una central de monitoreo." },
-    { icon: <HardDrive className="w-5 h-5 text-emerald-400" />, title: "Integración unificada (BMS)", desc: "Software de gestión unificado que coordina cámaras, alarmas y accesos en una sola pantalla de control." }
-  ];
-
   return (
-    <section id="energia-seguridad" className="relative py-24 bg-[#061014] text-white overflow-hidden border-b border-slate-900/60">
-      
-      {/* Design elements */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[130px] pointer-events-none z-0"></div>
+    <section
+      id="energia-seguridad"
+      className="relative py-24 md:py-32 bg-[#061014] text-white overflow-hidden border-b border-slate-900/60"
+    >
+      <motion.div
+        className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-emerald-500/6 rounded-full blur-[130px] pointer-events-none"
+        animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.1, 1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-0 left-0 w-[450px] h-[450px] bg-[#00c4f9]/6 rounded-full blur-[110px] pointer-events-none"
+        animate={{ x: [0, 30, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8">
-        
-        {/* Dual Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
-          
-          {/* LEFT PANEL: ENERGY & CONTINUITY */}
-          <div className="group relative card-border overflow-hidden rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:border-amber-500/30 hover:shadow-[0_0_35px_rgba(245,158,11,0.08)] transition-all duration-500">
-            
-            {/* Corner styling accents */}
-            <div className="absolute top-3 right-3 w-3 h-3 border-t border-r border-slate-800 group-hover:border-amber-500/40 transition-colors duration-300"></div>
-            <div className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-slate-800 group-hover:border-amber-500/40 transition-colors duration-300"></div>
+        <ScrollReveal>
+          <div className="text-center max-w-3xl mx-auto mb-14 md:mb-18">
+            <motion.div
+              className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-emerald-500/20 rounded-lg bg-emerald-950/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider"
+              whileHover={{ scale: 1.04 }}
+            >
+              <GlobeLock className="w-3.5 h-3.5" />
+              Conectividad &amp; Ciberseguridad
+            </motion.div>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-5">
+              Redes,{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-blue to-brand-teal">
+                Seguridad
+              </span>{" "}
+              y Sistemas
+            </h2>
+            <p className="text-gray-400 text-base md:text-lg font-light leading-relaxed">
+              Infraestructura de red integral: equipamiento activo, protección perimetral
+              y plataformas de servidor bajo estándares corporativos.
+            </p>
+          </div>
+        </ScrollReveal>
 
-            <div>
-              {/* Header glass tag & Icon bar */}
-              <div className="flex justify-between items-center mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl glass border-amber-500/30 text-amber-400 flex items-center justify-center group-hover:border-amber-500/50 transition-all duration-500 shadow-inner">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-xs uppercase font-mono tracking-wider text-amber-400 block font-bold">Energía Crítica</span>
-                    <span className="text-[9px] text-gray-500 font-mono block">SYSTEM CLASS: TIER III</span>
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 glass text-amber-400 rounded-full text-[10px] font-mono font-medium tracking-wide border border-amber-500/30">
-                  Power Active
-                </span>
-              </div>
-
-              {/* Graphical oscilliscope header visualizer */}
-              <div className="w-full h-32 rounded-xl gradient-border inner-glow overflow-hidden relative bg-[#061014]/90 mb-6 flex items-center justify-center shadow-inner">
-                {/* Micro-grid overlay */}
-                <div className="absolute inset-0 opacity-15 pointer-events-none z-20">
-                  <div 
-                    className="w-full h-full" 
-                    style={{ 
-                      backgroundImage: 'linear-gradient(90deg, rgba(245,158,11,0.15) 1px, transparent 1px), linear-gradient(rgba(245,158,11,0.15) 1px, transparent 1px)', 
-                      backgroundSize: '12px 12px' 
-                    }} 
-                  />
-                </div>
-                <OscilloscopeVisualizer />
-              </div>
-
-              <h3 className="text-xl md:text-2xl font-extrabold text-white leading-snug mb-3">
-                Energía confiable para empresas que <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-500">no pueden detenerse</span>
-              </h3>
-
-              <p className="text-gray-300 text-xs md:text-sm font-light leading-relaxed mb-6">
-                Una falla en el suministro eléctrico destruye bases de datos y frena ventas. Diseñamos infraestructuras de energía que neutralizan cortes, regulando el voltaje y transfiriendo cargas sin retraso de milisegundos.
-              </p>
-
-              {/* Gradient dividing neon line */}
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent my-6" />
-
-              {/* Benefits Checklist */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {energyBenefits.map((benefit, idx) => (
-                  <div key={idx} className="flex gap-2.5 items-start">
-                    <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors duration-300">{benefit.title}</h4>
-                      <p className="text-[11px] text-gray-400 mt-0.5 leading-relaxed font-light">{benefit.desc}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          {/* Bloques de servicio */}
+          <div className="lg:col-span-7 flex flex-col gap-5">
+            {serviceBlocks.map((block, index) => {
+              const Icon = block.icon;
+              return (
+                <motion.article
+                  key={block.title}
+                  custom={index}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-40px" }}
+                  whileHover={{
+                    y: -6,
+                    borderColor: "rgba(52, 211, 153, 0.35)",
+                    boxShadow: "0 16px 40px rgba(0, 0, 0, 0.3)",
+                  }}
+                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
+                  className="relative p-6 md:p-7 rounded-2xl border border-slate-800/80 bg-[#0b141b]/75 overflow-hidden group"
+                >
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-emerald-500/80 to-[#00c4f9]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="flex items-start gap-4">
+                    <motion.div
+                      className="p-3 rounded-xl bg-emerald-950/50 border border-emerald-500/25 flex-shrink-0"
+                      whileHover={{ rotate: [0, -6, 6, 0], scale: 1.08 }}
+                      transition={{ duration: 0.45 }}
+                    >
+                      <Icon className="w-6 h-6 text-emerald-400" />
+                    </motion.div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="w-2 h-2 rounded-sm bg-[#00c4f9] flex-shrink-0" />
+                        <h3 className="text-lg md:text-xl font-bold text-white group-hover:text-emerald-50 transition-colors">
+                          {block.title}
+                        </h3>
+                      </div>
+                      <ul className="space-y-3 mb-4">
+                        {block.items.map((item) => (
+                          <li
+                            key={item}
+                            className="text-sm text-gray-300 font-light leading-relaxed pl-1"
+                          >
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="flex flex-wrap gap-2">
+                        {block.bullets.map((tag) => (
+                          <span
+                            key={tag}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wide rounded-md border border-slate-800 bg-slate-900/60 text-gray-400 group-hover:border-emerald-500/20 group-hover:text-emerald-400/80 transition-colors"
+                          >
+                            <CheckCircle2 className="w-3 h-3" />
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
+                    <motion.div
+                      className="hidden sm:flex opacity-0 group-hover:opacity-100 transition-opacity"
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      <ArrowRight className="w-5 h-5 text-emerald-400" />
+                    </motion.div>
                   </div>
-                ))}
-              </div>
-            </div>
+                </motion.article>
+              );
+            })}
 
-            {/* Bottom telemetry monitoring block */}
-            <div className="glass border-white/5 pt-4 mt-6 flex justify-between items-center p-4 rounded-xl text-[10px]">
-              <span className="flex items-center gap-2 text-gray-400 font-mono">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                GRID: 50.0 HZ STABLE
-              </span>
-              <span className="font-mono text-amber-400 font-bold glass px-2.5 py-1 rounded border border-amber-500/25 tracking-wide uppercase">Respaldo: OK (100%)</span>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-wrap gap-4 p-4 rounded-xl border border-slate-800/60 bg-slate-900/30"
+            >
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <Phone className="w-4 h-4 text-emerald-400" />
+                VoIP corporativo
+              </div>
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <Flame className="w-4 h-4 text-[#00c4f9]" />
+                Firewall &amp; IPS
+              </div>
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <ScanSearch className="w-4 h-4 text-emerald-400" />
+                Estudios de vulnerabilidad
+              </div>
+            </motion.div>
           </div>
 
-          {/* RIGHT PANEL: ELECTRONIC SECURITY */}
-          <div className="group relative card-border overflow-hidden rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:border-emerald-500/30 hover:shadow-[0_0_35px_rgba(16,185,129,0.08)] transition-all duration-500">
-            
-            {/* Corner styling accents */}
-            <div className="absolute top-3 right-3 w-3 h-3 border-t border-r border-slate-800 group-hover:border-emerald-500/40 transition-colors duration-300"></div>
-            <div className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-slate-800 group-hover:border-emerald-500/40 transition-colors duration-300"></div>
-
-            <div>
-              {/* Header glass tag & Icon bar */}
-              <div className="flex justify-between items-center mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl glass border-emerald-500/30 text-emerald-400 flex items-center justify-center group-hover:border-emerald-500/50 transition-all duration-500 shadow-inner">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-xs uppercase font-mono tracking-wider text-emerald-400 block font-bold">Seguridad Electrónica</span>
-                    <span className="text-[9px] text-gray-500 font-mono block">SYSTEM SECURITY: AES-256</span>
-                  </div>
+          {/* Galería visual — layout bento */}
+          <div className="lg:col-span-5 grid grid-cols-2 gap-3 md:gap-4 auto-rows-[minmax(120px,auto)]">
+            {galleryImages.map((img, index) => (
+              <motion.div
+                key={img.src}
+                custom={index}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className={`relative rounded-xl overflow-hidden border border-emerald-500/20 bg-[#0b141b]/80 group ${img.span}`}
+                whileHover={{
+                  scale: 1.02,
+                  borderColor: "rgba(52, 211, 153, 0.5)",
+                  boxShadow: "0 20px 48px rgba(0, 196, 249, 0.12)",
+                }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-[#061014]/90 via-[#061014]/20 to-transparent z-10 pointer-events-none opacity-80 group-hover:opacity-60 transition-opacity" />
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className={`w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                    index === 1 ? "h-full min-h-[220px] lg:min-h-[320px]" : "h-36 sm:h-40 lg:h-44"
+                  }`}
+                  loading="lazy"
+                />
+                <div className="absolute bottom-3 left-3 right-3 z-20">
+                  <span className="inline-block px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-emerald-400 bg-[#0b141b]/90 border border-emerald-500/30 rounded-md backdrop-blur-sm">
+                    {img.label}
+                  </span>
                 </div>
-                <span className="px-2.5 py-1 glass text-emerald-400 rounded-full text-[10px] font-mono font-medium tracking-wide border border-emerald-500/30">
-                  CCTV Online
-                </span>
-              </div>
-
-              {/* Graphical radar header visualizer */}
-              <div className="w-full h-32 rounded-xl gradient-border inner-glow overflow-hidden relative bg-[#061014]/90 mb-6 flex items-center justify-center shadow-inner">
-                {/* Micro-grid overlay */}
-                <div className="absolute inset-0 opacity-15 pointer-events-none z-20">
-                  <div 
-                    className="w-full h-full" 
-                    style={{ 
-                      backgroundImage: 'linear-gradient(90deg, rgba(16,185,129,0.15) 1px, transparent 1px), linear-gradient(rgba(16,185,129,0.15) 1px, transparent 1px)', 
-                      backgroundSize: '12px 12px' 
-                    }} 
-                  />
-                </div>
-                <RadarVisualizer />
-              </div>
-
-              <h3 className="text-xl md:text-2xl font-extrabold text-white leading-snug mb-3">
-                Protección digital y física de <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">activos y personas</span>
-              </h3>
-
-              <p className="text-gray-300 text-xs md:text-sm font-light leading-relaxed mb-6">
-                El blindaje físico es el primer eslabón en la seguridad. Implementamos sistemas coordinados de videovigilancia y control de accesos perimetrales con trazabilidad absoluta en tus salas técnicas.
-              </p>
-
-              {/* Gradient dividing neon line */}
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent my-6" />
-
-              {/* Security Services list */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {securityServices.map((service, idx) => (
-                  <div key={idx} className="flex gap-2.5 items-start">
-                    <div className="p-1.5 glass border border-slate-800 rounded-lg text-emerald-400 flex-shrink-0 group-hover:border-emerald-500/30 transition-all duration-300">
-                      {service.icon}
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors duration-300">{service.title}</h4>
-                      <p className="text-[11px] text-gray-400 mt-0.5 leading-relaxed font-light">{service.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom telemetry monitoring block */}
-            <div className="glass border-white/5 pt-4 mt-6 flex justify-between items-center p-4 rounded-xl text-[10px]">
-              <span className="flex items-center gap-2 text-gray-400 font-mono">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                ACTIVE MONITOR: ALL CHANNELS
-              </span>
-              <span className="font-mono text-emerald-400 font-bold glass px-2.5 py-1 rounded border border-emerald-500/25 tracking-wide uppercase">Monitoreo: Activo</span>
-            </div>
+                <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-emerald-400/70 z-20 pointer-events-none" />
+                <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-emerald-400/70 z-20 pointer-events-none" />
+              </motion.div>
+            ))}
           </div>
-
         </div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-14 text-center"
+        >
+          <motion.a
+            href="#contacto"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-brand-primary hover:bg-brand-teal rounded-xl font-bold text-sm shadow-[0_0_24px_rgba(0,196,249,0.2)] transition-colors"
+            whileHover={{ scale: 1.03, boxShadow: "0 0 32px rgba(0, 196, 249, 0.3)" }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Consultá por redes y seguridad
+            <ArrowRight className="w-4 h-4" />
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );

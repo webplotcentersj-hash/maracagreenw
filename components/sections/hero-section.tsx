@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { BrandPaletteAccent } from "@/components/ui/brand-palette-accent";
 
 interface DataParticle {
   mesh: THREE.Mesh;
@@ -92,10 +93,10 @@ export function HeroSection() {
     scene.add(ceilingLight);
     scene.add(ceilingLight.target);
 
-    const fiberLight = new THREE.PointLight(0x10b981, 0, 8);
+    const fiberLight = new THREE.PointLight(0x00c4f9, 0, 8);
     scene.add(fiberLight);
 
-    const wallLogoLight = new THREE.SpotLight(0x10b981, 2, 8, Math.PI / 2.2, 0.5, 1);
+    const wallLogoLight = new THREE.SpotLight(0x00c4f9, 2, 8, Math.PI / 2.2, 0.5, 1);
     wallLogoLight.position.set(targetX - 7.5, 3.8, 3.0);
     wallLogoLight.target.position.set(targetX - 8.85, 2.2, 3.0);
     wallLogoLight.castShadow = true;
@@ -207,7 +208,7 @@ export function HeroSection() {
     fixtureGroup.add(arm1, arm2);
     
     const ledStripGeo = new THREE.CylinderGeometry(0.018, 0.018, 3.6, 16);
-    const ledStripMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+    const ledStripMat = new THREE.MeshBasicMaterial({ color: 0x00c4f9 });
     const ledStrip = new THREE.Mesh(ledStripGeo, ledStripMat);
     ledStrip.rotation.z = Math.PI / 2;
     ledStrip.position.y = -0.04;
@@ -225,7 +226,7 @@ export function HeroSection() {
       map: logoTexture, 
       transparent: true,
       alphaTest: 0.15,
-      emissive: 0x10b981,
+      emissive: 0x00c4f9,
       emissiveMap: logoTexture,
       emissiveIntensity: 0.1,
       roughness: 0.2,
@@ -293,7 +294,7 @@ export function HeroSection() {
       return group;
     };
 
-    const monitor1 = createMonitor(-3.5, -0.6, -1.2, Math.PI / 8, 0x064e3b); // Fondo verde inicial
+    const monitor1 = createMonitor(-3.5, -0.6, -1.2, Math.PI / 8, 0x002d42); // Fondo verde inicial
     const monitor2 = createMonitor(0, -0.6, -1.4, -Math.PI / 16, 0x082f49); // Fondo azul inicial
     officeGroup.add(monitor1, monitor2);
 
@@ -309,7 +310,7 @@ export function HeroSection() {
     const bigScreenMat = new THREE.MeshStandardMaterial({ 
       color: 0x050505,
       map: logoTexture,
-      emissive: 0x10b981,
+      emissive: 0x00c4f9,
       emissiveMap: logoTexture,
       emissiveIntensity: 0,
       transparent: true,
@@ -375,7 +376,7 @@ export function HeroSection() {
       rackGroup.add(server);
 
       const sLedGeo = new THREE.BoxGeometry(0.05, 0.05, 0.05);
-      const sLedMat = new THREE.MeshBasicMaterial({ color: 0x059669 });
+      const sLedMat = new THREE.MeshBasicMaterial({ color: 0x007bb0 });
       const sLed = new THREE.Mesh(sLedGeo, sLedMat);
       sLed.position.set(0.7, 1.8 - (i * 0.5), 0.77);
       rackGroup.add(sLed);
@@ -408,8 +409,8 @@ export function HeroSection() {
     const coreLength = 12;
     const coreGeo = new THREE.CylinderGeometry(0.04, 0.04, coreLength, 16);
     const coreMat = new THREE.MeshStandardMaterial({ 
-      color: 0xa7f3d0,
-      emissive: 0x059669,
+      color: 0xbbe5f8,
+      emissive: 0x007bb0,
       emissiveIntensity: 0.5,
       transparent: true,
       opacity: 0.9
@@ -457,7 +458,7 @@ export function HeroSection() {
     const outerJacketLength = 15;
     const outerJacket = new THREE.Mesh(
       new THREE.CylinderGeometry(0.24, 0.24, outerJacketLength, 32),
-      new THREE.MeshStandardMaterial({ color: 0x059669, roughness: 0.8 })
+      new THREE.MeshStandardMaterial({ color: 0x007bb0, roughness: 0.8 })
     );
     outerJacket.rotation.x = Math.PI / 2;
     outerJacket.position.z = 4.0 + (outerJacketLength / 2);
@@ -529,8 +530,8 @@ export function HeroSection() {
           controls.enabled = true;
 
           // Encender LEDs del rack y el switch
-          ledMat1.color.setHex(0x10b981);
-          serverLeds.forEach(mat => mat.color.setHex(0x34d399));
+          ledMat1.color.setHex(0x00c4f9);
+          serverLeds.forEach(mat => mat.color.setHex(0x26b4f0));
 
           // Activar monitores de oficina y reproducir videos
           const screen1Mesh = monitor1.children[2] as THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
@@ -601,7 +602,7 @@ export function HeroSection() {
         });
 
         serverLeds.forEach((mat, index) => {
-          mat.color.setHex(Math.sin(time * 5 + index) > 0.5 ? 0x10b981 : 0x064e3b);
+          mat.color.setHex(Math.sin(time * 5 + index) > 0.5 ? 0x00c4f9 : 0x002d42);
         });
 
         logoMat.emissiveIntensity = 0.6 + Math.sin(time * 2) * 0.2;
@@ -669,13 +670,13 @@ export function HeroSection() {
         <style dangerouslySetInnerHTML={{ __html: `
           @keyframes pulseGlow {
             0%, 100% {
-              box-shadow: 0 0 12px rgba(16, 185, 129, 0.2), inset 0 0 6px rgba(16, 185, 129, 0.08);
-              border-color: rgba(16, 185, 129, 0.35);
+              box-shadow: 0 0 12px rgba(0, 196, 249, 0.2), inset 0 0 6px rgba(0, 196, 249, 0.08);
+              border-color: rgba(0, 196, 249, 0.35);
               background: rgba(6, 78, 59, 0.01);
             }
             50% {
-              box-shadow: 0 0 24px rgba(16, 185, 129, 0.5), inset 0 0 10px rgba(16, 185, 129, 0.15);
-              border-color: rgba(52, 211, 153, 0.8);
+              box-shadow: 0 0 24px rgba(0, 196, 249, 0.5), inset 0 0 10px rgba(0, 196, 249, 0.15);
+              border-color: rgba(38, 180, 240, 0.8);
               background: rgba(6, 78, 59, 0.04);
             }
           }
@@ -693,12 +694,12 @@ export function HeroSection() {
           }
           @keyframes pulseConnected {
             0%, 100% {
-              box-shadow: 0 0 18px rgba(16, 185, 129, 0.4), inset 0 0 8px rgba(16, 185, 129, 0.15);
-              border-color: rgba(52, 211, 153, 0.6);
+              box-shadow: 0 0 18px rgba(0, 196, 249, 0.4), inset 0 0 8px rgba(0, 196, 249, 0.15);
+              border-color: rgba(38, 180, 240, 0.6);
               background: rgba(6, 78, 59, 0.05);
             }
             50% {
-              box-shadow: 0 0 32px rgba(16, 185, 129, 0.8), inset 0 0 15px rgba(16, 185, 129, 0.3);
+              box-shadow: 0 0 32px rgba(0, 196, 249, 0.8), inset 0 0 15px rgba(0, 196, 249, 0.3);
               border-color: rgba(110, 231, 183, 0.95);
               background: rgba(6, 78, 59, 0.12);
             }
@@ -706,12 +707,12 @@ export function HeroSection() {
           @keyframes ledPulse {
             0%, 100% {
               opacity: 0.6;
-              filter: drop-shadow(0 0 3px rgba(52, 211, 153, 0.7)) drop-shadow(0 0 6px rgba(52, 211, 153, 0.3));
+              filter: drop-shadow(0 0 3px rgba(38, 180, 240, 0.7)) drop-shadow(0 0 6px rgba(38, 180, 240, 0.3));
               transform: scale(0.95);
             }
             50% {
               opacity: 1;
-              filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.95)) drop-shadow(0 0 18px rgba(52, 211, 153, 0.6));
+              filter: drop-shadow(0 0 10px rgba(38, 180, 240, 0.95)) drop-shadow(0 0 18px rgba(38, 180, 240, 0.6));
               transform: scale(1.08);
             }
           }
@@ -729,10 +730,10 @@ export function HeroSection() {
           }
           @keyframes ledActiveSteady {
             0%, 100% {
-              filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.8)) drop-shadow(0 0 15px rgba(52, 211, 153, 0.5));
+              filter: drop-shadow(0 0 6px rgba(38, 180, 240, 0.8)) drop-shadow(0 0 15px rgba(38, 180, 240, 0.5));
             }
             50% {
-              filter: drop-shadow(0 0 12px rgba(52, 211, 153, 1)) drop-shadow(0 0 28px rgba(52, 211, 153, 0.8));
+              filter: drop-shadow(0 0 12px rgba(38, 180, 240, 1)) drop-shadow(0 0 28px rgba(38, 180, 240, 0.8));
             }
           }
           @keyframes laserSweep {
@@ -768,7 +769,7 @@ export function HeroSection() {
             animation: ledActiveSteady 1.5s infinite ease-in-out;
           }
           .laser-sweep-bg {
-            background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.1) 30%, rgba(52, 211, 153, 0.3) 50%, rgba(52, 211, 153, 0.1) 70%, transparent);
+            background: linear-gradient(90deg, transparent, rgba(38, 180, 240, 0.1) 30%, rgba(38, 180, 240, 0.3) 50%, rgba(38, 180, 240, 0.1) 70%, transparent);
             background-size: 200% 100%;
             animation: laserSweep 3.5s infinite linear;
           }
@@ -783,8 +784,8 @@ export function HeroSection() {
             animation: laserSweep 5s infinite linear;
           }
           .tech-bg-grid {
-            background-image: linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(0, 196, 249, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 196, 249, 0.03) 1px, transparent 1px);
             background-size: 8px 8px;
           }
           .tech-bg-grid-connecting {
@@ -812,12 +813,12 @@ export function HeroSection() {
             0%, 100% {
               transform: scale(1);
               opacity: 0.6;
-              box-shadow: 0 0 6px #10b981, 0 0 12px rgba(16, 185, 129, 0.6);
+              box-shadow: 0 0 6px #00c4f9, 0 0 12px rgba(0, 196, 249, 0.6);
             }
             50% {
               transform: scale(1.25);
               opacity: 1;
-              box-shadow: 0 0 12px #34d399, 0 0 24px rgba(52, 211, 153, 0.9);
+              box-shadow: 0 0 12px #26b4f0, 0 0 24px rgba(38, 180, 240, 0.9);
             }
           }
           .led-glow-node {
@@ -834,22 +835,26 @@ export function HeroSection() {
           {/* Contenedor del texto (Alineado a la izquierda) */}
           <div className="max-w-2xl w-full pointer-events-auto">
             
-            <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 border border-emerald-500/30 rounded-full bg-emerald-950/40 backdrop-blur-md text-emerald-400 text-xs font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 border border-brand-primary/30 rounded-full bg-brand-petrol/40 backdrop-blur-md text-brand-primary text-xs font-medium">
+              <BrandPaletteAccent variant="dots" />
               Infraestructura Greenworking Lista
             </div>
             
-            <h1 className="group/title text-2xl sm:text-3xl md:text-[2.25rem] lg:text-[2.75rem] font-extrabold tracking-tight mb-5 leading-tight cursor-default">
+            <h1 className="group/title text-2xl sm:text-3xl md:text-[2.25rem] lg:text-[2.75rem] font-extrabold tracking-tight mb-5 leading-tight cursor-default uppercase">
               <span className="text-white group-hover/title:text-emerald-400 transition-colors duration-500">
-                Infraestructura tecnológica para <br />
+                28 AÑOS <br />
+                CONECTANDO Y <br />
+                PROTEGIENDO <br />
               </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-500 to-emerald-300 group-hover/title:text-white transition-all duration-500">
-                empresas que no pueden detenerse.
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-blue to-brand-teal group-hover/title:text-white transition-all duration-500">
+                COMPAÑÍAS ARGENTINAS
               </span>
             </h1>
             
-            <p className="text-zinc-300 text-xs md:text-sm mb-8 leading-relaxed font-normal tracking-wide text-justify max-w-lg drop-shadow-md opacity-90">
-              Conectamos, protegemos y sostenemos la operación de tu organización mediante soluciones integrales de alto rendimiento en redes, data centers, energía crítica y soporte de primer nivel.
+            <p className="text-zinc-300 text-xs md:text-sm mb-8 leading-relaxed font-normal tracking-wide text-left max-w-lg drop-shadow-md opacity-90">
+              Estamos comprometidos con la CALIDAD, <br />
+              la INNOVACIÓN y el SOPORTE TÉCNICO <br />
+              de excelencia
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
@@ -973,15 +978,6 @@ export function HeroSection() {
                 Conocer Soluciones
               </a>
 
-              <button 
-                onClick={() => setShowPdf(true)}
-                className="px-8 py-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 font-sans font-semibold text-center hover:bg-emerald-500 hover:text-black transition-all duration-300 backdrop-blur-sm flex items-center justify-center gap-2 cursor-pointer pointer-events-auto shadow-lg"
-              >
-                <svg className="w-5 h-5 filter drop-shadow-[0_0_4px_rgba(16,185,129,0.4)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Ver Marca en PDF
-              </button>
             </div>
           </div>
         </div>
@@ -1000,17 +996,17 @@ export function HeroSection() {
               fill="none" 
               stroke="url(#transitionLaserGradient)" 
               strokeWidth="2" 
-              className="filter drop-shadow-[0_0_8px_rgba(16,185,129,0.9)]"
+              className="filter drop-shadow-[0_0_8px_rgba(0, 196, 249,0.9)]"
             />
             <defs>
               <linearGradient id="transitionLaserGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#10b981" stopOpacity="0" />
-                <stop offset="25%" stopColor="#10b981" stopOpacity="0.3" />
-                <stop offset="42%" stopColor="#10b981" stopOpacity="1" />
-                <stop offset="50%" stopColor="#34d399" stopOpacity="1" />
-                <stop offset="58%" stopColor="#10b981" stopOpacity="1" />
-                <stop offset="75%" stopColor="#10b981" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                <stop offset="0%" stopColor="#00c4f9" stopOpacity="0" />
+                <stop offset="25%" stopColor="#00c4f9" stopOpacity="0.3" />
+                <stop offset="42%" stopColor="#00c4f9" stopOpacity="1" />
+                <stop offset="50%" stopColor="#26b4f0" stopOpacity="1" />
+                <stop offset="58%" stopColor="#00c4f9" stopOpacity="1" />
+                <stop offset="75%" stopColor="#00c4f9" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#00c4f9" stopOpacity="0" />
               </linearGradient>
             </defs>
           </svg>
@@ -1019,27 +1015,25 @@ export function HeroSection() {
           <div className="absolute bottom-6 right-[44.4%] w-1.5 h-1.5 rounded-full bg-emerald-400 led-glow-node" />
 
           {/* Botón de bajar interactivo y dinámico */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-auto">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-auto">
             <button 
               onClick={handleScrollDown}
-              className="group flex flex-col items-center focus:outline-none transition-all duration-300 hover:-translate-y-0.5 relative pt-4"
+              className="group flex flex-col items-center focus:outline-none transition-all duration-300 hover:-translate-y-1 relative"
               aria-label="Desplazarse hacia abajo"
             >
-              {/* Etiqueta flotante "Bajar" que aparece al pasar el mouse */}
-              <span className="absolute top-0 text-[8px] font-mono tracking-[0.25em] text-emerald-400 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 uppercase pointer-events-none select-none filter drop-shadow-[0_0_4px_rgba(16,185,129,0.7)]">
+              {/* Etiqueta flotante "Bajar" siempre visible */}
+              <span className="text-[10px] font-mono tracking-[0.25em] text-emerald-400/90 group-hover:text-emerald-300 group-hover:drop-shadow-[0_0_6px_rgba(0,196,249,0.6)] transition-all duration-300 uppercase pointer-events-none select-none mb-2">
                 Bajar
               </span>
 
-              {/* Tres círculos verticales con animación de rebote y brillo */}
-              <div className="flex flex-col gap-1 items-center mt-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/40 group-hover:bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.3)] transition-all duration-300 animate-pulse delay-75" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/70 group-hover:bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.5)] transition-all duration-300 animate-pulse delay-150" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 group-hover:bg-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.8)] transition-all duration-300 animate-bounce" />
+              {/* Icono de mouse premium con rueda animada y brillo */}
+              <div className="w-6 h-10 rounded-full border-2 border-emerald-500/40 group-hover:border-emerald-400 flex justify-center p-1.5 transition-all duration-300 shadow-[0_0_10px_rgba(0,196,249,0.1)] group-hover:shadow-[0_0_15px_rgba(0,196,249,0.3)] bg-black/30 backdrop-blur-[2px]">
+                <div className="w-1.5 h-2.5 bg-emerald-400 rounded-full animate-bounce" />
               </div>
               
               {/* Indicador de flecha sutil */}
               <svg 
-                className="w-4 h-4 text-emerald-400/70 group-hover:text-emerald-300 transition-colors duration-300 mt-1 filter drop-shadow-[0_0_4px_rgba(16,185,129,0.5)]" 
+                className="w-4 h-4 text-emerald-400/70 group-hover:text-emerald-300 transition-all duration-300 mt-1 filter drop-shadow-[0_0_4px_rgba(0,196,249,0.5)] animate-pulse" 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
@@ -1057,7 +1051,7 @@ export function HeroSection() {
             {/* Header del Modal */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0e171e]">
               <div className="flex items-center gap-3">
-                <svg className="w-6 h-6 text-emerald-400 filter drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-emerald-400 filter drop-shadow-[0_0_8px_rgba(0, 196, 249,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <h3 className="font-bold text-sm md:text-base text-white font-mono tracking-wider uppercase">
@@ -1078,7 +1072,7 @@ export function HeroSection() {
             {/* Cuerpo del Modal con el Iframe del Lector de PDF */}
             <div className="flex-1 bg-[#061014] p-2 flex items-center justify-center relative">
               <iframe 
-                src="/pdf/Manual%20de%20marca%20(1).pdf#toolbar=1&navpanes=0&scrollbar=1"
+                src="/pdf/manual-de-marca.pdf#toolbar=1&navpanes=0&scrollbar=1"
                 className="w-full h-full rounded-lg border-0 bg-transparent"
                 title="Lector de PDF - Manual de Marca"
               />

@@ -81,7 +81,7 @@ export function ExpandableCard({
               layoutId={`card-${title}-${id}`}
               ref={cardRef}
               className={cn(
-                "w-full max-w-[850px] flex flex-col rounded-2xl bg-[#0b141b]/95 border border-slate-800/80 shadow-[0_0_50px_rgba(16,185,129,0.12)] relative overflow-hidden my-8 max-h-[85vh]",
+                "w-full max-w-[850px] flex flex-col rounded-2xl bg-[#0b141b]/95 border border-slate-800/80 shadow-[0_0_50px_rgba(0, 196, 249,0.12)] relative overflow-hidden my-8 max-h-[85vh]",
                 classNameExpanded,
               )}
               {...props}
@@ -114,7 +114,7 @@ export function ExpandableCard({
                   <motion.button
                     aria-label="Close card"
                     layoutId={`button-${title}-${id}`}
-                    className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-[#061014] transition-all duration-300 focus:outline-none"
+                    className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 hover:bg-brand-primary hover:text-white transition-all duration-300 focus:outline-none"
                     onClick={() => setActive(false)}
                   >
                     <motion.div
@@ -162,7 +162,7 @@ export function ExpandableCard({
         layoutId={`card-${title}-${id}`}
         onClick={() => setActive(true)}
         className={cn(
-          "group p-4 flex flex-col bg-[#0b141b]/60 border border-slate-900/80 rounded-2xl cursor-pointer hover:border-emerald-500/30 hover:bg-[#0b141b]/90 hover:shadow-[0_4px_20px_rgba(16,185,129,0.06)] transition-all duration-300 w-full",
+          "group p-4 flex flex-col bg-[#0b141b]/60 border border-slate-900/80 rounded-2xl cursor-pointer hover:border-emerald-500/30 hover:bg-[#0b141b]/90 hover:shadow-[0_4px_20px_rgba(0, 196, 249,0.06)] transition-all duration-300 w-full",
           className,
         )}
       >

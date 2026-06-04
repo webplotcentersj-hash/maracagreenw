@@ -300,7 +300,7 @@ export function NewsCards({
                <motion.article
                  key={card.id}
                  layoutId={`card-${card.id}`}
-                 className="bg-[#0b141b]/60 border border-slate-900 rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group hover:border-emerald-500/30 hover:bg-[#0e1c25]/80 hover:shadow-[0_10px_30px_rgba(16,185,129,0.05)]"
+                 className="bg-[#0b141b]/60 border border-slate-900 rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group hover:border-emerald-500/30 hover:bg-[#0e1c25]/80 hover:shadow-[0_10px_30px_rgba(0, 196, 249,0.05)]"
                  variants={shouldAnimate ? cardVariants : {}}
                  whileHover={shouldAnimate ? { 
                    y: -4,

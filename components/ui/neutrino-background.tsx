@@ -65,7 +65,7 @@ export function NeutrinoBackground({ opacity = 0.6 }: NeutrinoBackgroundProps) {
       // Algunas partículas serán cian y la mayoría verde esmeralda
       const isCyan = Math.random() > 0.85;
       const color = isCyan ? "#e0f2fe" : "#ffffff"; // Núcleo muy brillante
-      const glowColor = isCyan ? "rgba(6, 182, 212, " : "rgba(16, 185, 129, "; // Cyan o Emerald
+      const glowColor = isCyan ? "rgba(6, 182, 212, " : "rgba(0, 196, 249, "; // Cyan o Emerald
 
       return {
         x: pos.x,
@@ -108,7 +108,7 @@ export function NeutrinoBackground({ opacity = 0.6 }: NeutrinoBackgroundProps) {
       ctx.fillRect(0, 0, width, height);
 
       // Dibujar la grilla de guía sutil en segundo plano para dar contexto físico a los neutrinos
-      ctx.strokeStyle = "rgba(16, 185, 129, 0.03)";
+      ctx.strokeStyle = "rgba(0, 196, 249, 0.03)";
       ctx.lineWidth = 1;
       
       // Líneas verticales

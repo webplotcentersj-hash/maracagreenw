@@ -537,7 +537,7 @@ export default function Brand3DSection() {
     execOfficeLight.position.set(-5, 4, -11);
     scene.add(execOfficeLight);
 
-    const serverRoomLight = new THREE.PointLight(0x10b981, 0.5, 15); 
+    const serverRoomLight = new THREE.PointLight(0x00c4f9, 0.5, 15); 
     serverRoomLight.position.set(5, 3, -4);
     scene.add(serverRoomLight);
 
@@ -546,7 +546,7 @@ export default function Brand3DSection() {
     nocLight.position.set(13, 4, -6);
     scene.add(nocLight);
 
-    const fiberLight = new THREE.PointLight(0x34d399, 0, 10);
+    const fiberLight = new THREE.PointLight(0x26b4f0, 0, 10);
     scene.add(fiberLight);
 
     // --- GRUPOS PRINCIPALES ---
@@ -838,7 +838,7 @@ export default function Brand3DSection() {
         };
         interactiveScreens.push(screen);
 
-        const ledMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 1 });
+        const ledMat = new THREE.MeshBasicMaterial({ color: 0x26b4f0, transparent: true, opacity: 1 });
         execScreenLed = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 8), ledMat);
         execScreenLed.position.set(0, 0.4, -0.041); 
 
@@ -985,7 +985,7 @@ export default function Brand3DSection() {
       // C. LED de encendido sutil
       const laptopLed = new THREE.Mesh(
         new THREE.SphereGeometry(0.005, 8, 8),
-        new THREE.MeshBasicMaterial({ color: 0x10b981 })
+        new THREE.MeshBasicMaterial({ color: 0x00c4f9 })
       );
       laptopLed.position.set(0.26, 0.006, 0.1);
       laptopGroup.add(laptopLed);
@@ -1196,9 +1196,9 @@ export default function Brand3DSection() {
 
     // Cartel luminoso 3: Oficina Ejecutiva (Sobre los listones de madera detrás del escritorio)
     const execLogoMat = new THREE.MeshStandardMaterial({
-      map: logoTexture, transparent: true, emissive: 0x10b981, emissiveMap: logoTexture, emissiveIntensity: 0.1
+      map: logoTexture, transparent: true, emissive: 0x00c4f9, emissiveMap: logoTexture, emissiveIntensity: 0.1
     });
-    const execLogo = createFramedLogo(1.8, 0.9, execLogoMat, 0x10b981);
+    const execLogo = createFramedLogo(1.8, 0.9, execLogoMat, 0x00c4f9);
     execLogo.position.set(0, 4.3, -3.8);
     execOffice.group.add(execLogo);
 
@@ -1218,9 +1218,9 @@ export default function Brand3DSection() {
     officeGroup.add(openLogoGroup);
 
 
-    const serverLedMat1 = new THREE.MeshBasicMaterial({ color: 0x059669 });
-    const serverLedMat2 = new THREE.MeshBasicMaterial({ color: 0x059669 });
-    const serverLedMat3 = new THREE.MeshBasicMaterial({ color: 0x059669 });
+    const serverLedMat1 = new THREE.MeshBasicMaterial({ color: 0x007bb0 });
+    const serverLedMat2 = new THREE.MeshBasicMaterial({ color: 0x007bb0 });
+    const serverLedMat3 = new THREE.MeshBasicMaterial({ color: 0x007bb0 });
     const sharedServerMats = [serverLedMat1, serverLedMat2, serverLedMat3];
 
     for(let j = 0; j < 3; j++) {
@@ -1432,7 +1432,7 @@ export default function Brand3DSection() {
                 monitorScreen.frustumCulled = false;
                 monitorScreen.position.set(0, 0.3, 0.021);
 
-                const mLedMat = new THREE.MeshBasicMaterial({ color: 0x34d399, transparent: true, opacity: 1 });
+                const mLedMat = new THREE.MeshBasicMaterial({ color: 0x26b4f0, transparent: true, opacity: 1 });
                 const monitorLed = new THREE.Mesh(new THREE.SphereGeometry(0.01, 8, 8), mLedMat);
                 monitorLed.position.set(0, 0.3, -0.021);
 
@@ -1464,7 +1464,7 @@ export default function Brand3DSection() {
     // ==========================================
     // CABLE DE FIBRA ÓPTICA
     // ==========================================
-    const coreMat = new THREE.MeshStandardMaterial({ color: 0xa7f3d0, emissive: 0x059669, emissiveIntensity: 0.5, transparent: true, opacity: 0.9 });
+    const coreMat = new THREE.MeshStandardMaterial({ color: 0xbbe5f8, emissive: 0x007bb0, emissiveIntensity: 0.5, transparent: true, opacity: 0.9 });
     const core = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 12, 16), coreMat);
     core.rotation.x = Math.PI / 2; core.position.z = 6;
     cableGroup.add(core);
@@ -1485,7 +1485,7 @@ export default function Brand3DSection() {
     innerJacket.rotation.x = Math.PI / 2; innerJacket.position.z = 6.5;
     cableGroup.add(innerJacket);
 
-    const outerJacket = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 15, 32), new THREE.MeshStandardMaterial({ color: 0x059669, roughness: 0.8 }));
+    const outerJacket = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 15, 32), new THREE.MeshStandardMaterial({ color: 0x007bb0, roughness: 0.8 }));
     outerJacket.rotation.x = Math.PI / 2; outerJacket.position.z = 11.5;
     cableGroup.add(outerJacket);
 
@@ -1922,8 +1922,8 @@ export default function Brand3DSection() {
           isConnected = true; 
           setStatus('connected'); 
           
-          ledMat1.color.setHex(0x10b981);
-          sharedServerMats.forEach((mat) => mat.color.setHex(0x34d399));
+          ledMat1.color.setHex(0x00c4f9);
+          sharedServerMats.forEach((mat) => mat.color.setHex(0x26b4f0));
           
           fiberLight.position.copy(portTarget);
           gsap.to(fiberLight, { intensity: 10, duration: 0.3, yoyo: true, repeat: 1 });
@@ -1976,7 +1976,7 @@ export default function Brand3DSection() {
           // evitando la decodificación masiva de 9 videos simultáneamente al conectar.
           
           gsap.to(nocLight, { intensity: 6, duration: 1.5, delay: 0.7 });
-          const techColors = [0x0ea5e9, 0x10b981, 0x3b82f6]; // Colores de red
+          const techColors = [0x0ea5e9, 0x00c4f9, 0x3b82f6]; // Colores de red
           nocScreenMats.forEach((mat, index) => {
               if (index >= 0 && index <= 13) {
                   setTimeout(() => {
@@ -2041,9 +2041,9 @@ export default function Brand3DSection() {
         });
 
         const blinkTime = time * 8;
-        serverLedMat1.color.setHex( Math.sin(blinkTime + 0) > 0.2 ? 0x10b981 : 0x064e3b );
-        serverLedMat2.color.setHex( Math.sin(blinkTime + 1.5) > 0.2 ? 0x10b981 : 0x064e3b );
-        serverLedMat3.color.setHex( Math.sin(blinkTime + 3.0) > 0.2 ? 0x10b981 : 0x064e3b );
+        serverLedMat1.color.setHex( Math.sin(blinkTime + 0) > 0.2 ? 0x00c4f9 : 0x002d42 );
+        serverLedMat2.color.setHex( Math.sin(blinkTime + 1.5) > 0.2 ? 0x00c4f9 : 0x002d42 );
+        serverLedMat3.color.setHex( Math.sin(blinkTime + 3.0) > 0.2 ? 0x00c4f9 : 0x002d42 );
         
         const pulseVal = 0.8 + Math.sin(time * 2) * 0.2;
         logoMat.emissiveIntensity = pulseVal;
@@ -2058,10 +2058,10 @@ export default function Brand3DSection() {
         const ledMat = execScreenLed.material as THREE.MeshBasicMaterial;
         if (!isConnected) {
           ledMat.opacity = 0.3 + 0.7 * Math.abs(Math.sin(time * 3));
-          ledMat.color.setHex(0x34d399);
+          ledMat.color.setHex(0x26b4f0);
         } else {
           ledMat.opacity = 1.0;
-          ledMat.color.setHex(0x34d399);
+          ledMat.color.setHex(0x26b4f0);
         }
       }
 
@@ -2222,10 +2222,10 @@ export default function Brand3DSection() {
         {`
           .btn-glow { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); transition: all 0.3s ease; }
           .btn-glow:hover { box-shadow: 0 0 35px rgba(34, 197, 94, 0.7); }
-          .btn-connected { box-shadow: 0 0 40px rgba(16, 185, 129, 0.8); background-color: #059669 !important; border: 1px solid #34d399; }
+          .btn-connected { box-shadow: 0 0 40px rgba(0, 196, 249, 0.8); background-color: #007bb0 !important; border: 1px solid #26b4f0; }
           .nav-btn { transition: all 0.2s; }
           .nav-btn:hover { background-color: rgba(255,255,255,0.1); transform: scale(1.1); }
-          .nav-active { background-color: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; }
+          .nav-active { background-color: rgba(0, 196, 249, 0.2); border-color: #00c4f9; color: #00c4f9; }
           
           @keyframes shimmer {
             0% { transform: translateX(-100%); }
@@ -2271,7 +2271,7 @@ export default function Brand3DSection() {
       <div className="absolute top-6 right-6 z-20 pointer-events-auto">
         <button 
           onClick={handleClose}
-          className="px-5 py-2.5 text-[11px] uppercase tracking-widest font-bold font-mono text-emerald-400 bg-slate-950/80 border border-emerald-500/30 rounded-xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:bg-emerald-500 hover:text-[#061014] hover:border-emerald-400 active:translate-y-0.5 flex items-center gap-2"
+          className="px-5 py-2.5 text-[11px] uppercase tracking-widest font-bold font-mono text-emerald-400 bg-slate-950/80 border border-emerald-500/30 rounded-xl overflow-hidden backdrop-blur-md transition-all duration-300 shadow-[0_0_15px_rgba(0, 196, 249,0.1)] hover:shadow-[0_0_25px_rgba(0, 196, 249,0.3)] hover:bg-brand-primary hover:text-white hover:border-emerald-400 active:translate-y-0.5 flex items-center gap-2"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           Volver al Sitio
@@ -2323,7 +2323,7 @@ export default function Brand3DSection() {
       <main className="relative z-10 flex items-end justify-center h-full w-full p-8 md:p-16 pointer-events-none">
         <div className="pointer-events-auto mb-8 flex flex-col items-center gap-3">
           {status === 'idle' && gsapLoaded && (
-            <div className="px-4 py-1.5 rounded-full bg-[#0a1218]/90 border border-emerald-500/20 backdrop-blur-sm text-emerald-400 font-mono text-[10px] tracking-wider uppercase animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <div className="px-4 py-1.5 rounded-full bg-[#0a1218]/90 border border-emerald-500/20 backdrop-blur-sm text-emerald-400 font-mono text-[10px] tracking-wider uppercase animate-pulse shadow-[0_0_15px_rgba(0, 196, 249,0.1)]">
               Conectar Red de Fibra para Energizar la Oficina
             </div>
           )}
@@ -2380,7 +2380,7 @@ export default function Brand3DSection() {
             <button
               onClick={() => (window as any).gw_flip_back?.()}
               disabled={currentSpread === 0}
-              className="px-4 py-2 text-[11px] font-mono tracking-widest font-bold uppercase border border-emerald-500/20 text-emerald-400 bg-slate-900 rounded-xl hover:bg-emerald-500 hover:text-black transition-all disabled:opacity-30 disabled:pointer-events-none"
+              className="px-4 py-2 text-[11px] font-mono tracking-widest font-bold uppercase border border-emerald-500/20 text-emerald-400 bg-slate-900 rounded-xl hover:bg-brand-primary hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none"
             >
               ◀ Ant
             </button>
@@ -2390,7 +2390,7 @@ export default function Brand3DSection() {
             <button
               onClick={() => (window as any).gw_flip_forward?.()}
               disabled={currentSpread === 7}
-              className="px-4 py-2 text-[11px] font-mono tracking-widest font-bold uppercase border border-emerald-500/20 text-emerald-400 bg-slate-900 rounded-xl hover:bg-emerald-500 hover:text-black transition-all disabled:opacity-30 disabled:pointer-events-none"
+              className="px-4 py-2 text-[11px] font-mono tracking-widest font-bold uppercase border border-emerald-500/20 text-emerald-400 bg-slate-900 rounded-xl hover:bg-brand-primary hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none"
             >
               Sig ▶
             </button>
@@ -2405,7 +2405,7 @@ export default function Brand3DSection() {
                 }
               }}
               disabled={currentSpread === 0}
-              className="px-4 py-2 text-[10px] uppercase tracking-widest font-bold font-mono text-emerald-400 bg-slate-950/80 border border-emerald-500/30 rounded-xl overflow-hidden hover:bg-emerald-500 hover:text-black disabled:opacity-30 disabled:pointer-events-none transition-all"
+              className="px-4 py-2 text-[10px] uppercase tracking-widest font-bold font-mono text-emerald-400 bg-slate-950/80 border border-emerald-500/30 rounded-xl overflow-hidden hover:bg-brand-primary hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all"
             >
               🔍 Zoom Izq
             </button>
@@ -2417,7 +2417,7 @@ export default function Brand3DSection() {
                 }
               }}
               disabled={currentSpread === 7}
-              className="px-4 py-2 text-[10px] uppercase tracking-widest font-bold font-mono text-emerald-400 bg-slate-950/80 border border-emerald-500/30 rounded-xl overflow-hidden hover:bg-emerald-500 hover:text-black disabled:opacity-30 disabled:pointer-events-none transition-all"
+              className="px-4 py-2 text-[10px] uppercase tracking-widest font-bold font-mono text-emerald-400 bg-slate-950/80 border border-emerald-500/30 rounded-xl overflow-hidden hover:bg-brand-primary hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all"
             >
               🔍 Zoom Der
             </button>
@@ -2434,7 +2434,7 @@ export default function Brand3DSection() {
           {/* Botón de cierre HUD */}
           <button 
             onClick={closeFullscreen}
-            className="absolute top-6 right-6 p-3.5 rounded-2xl bg-[#0a1218]/90 border border-slate-800 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/50 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all duration-300 pointer-events-auto"
+            className="absolute top-6 right-6 p-3.5 rounded-2xl bg-[#0a1218]/90 border border-slate-800 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/50 hover:shadow-[0_0_15px_rgba(0, 196, 249,0.2)] transition-all duration-300 pointer-events-auto"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
@@ -2448,7 +2448,7 @@ export default function Brand3DSection() {
                     e.stopPropagation();
                     handleZoomPrevPage();
                   }}
-                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-[#0a1218]/85 border border-slate-800 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all duration-300 pointer-events-auto active:scale-95 group z-[210] backdrop-blur-sm"
+                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-[#0a1218]/85 border border-slate-800 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/40 hover:shadow-[0_0_20px_rgba(0, 196, 249,0.25)] transition-all duration-300 pointer-events-auto active:scale-95 group z-[210] backdrop-blur-sm"
                   title="Página Anterior (Flecha Izquierda)"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:-translate-x-0.5">
@@ -2463,7 +2463,7 @@ export default function Brand3DSection() {
                     e.stopPropagation();
                     handleZoomNextPage();
                   }}
-                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-[#0a1218]/85 border border-slate-800 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all duration-300 pointer-events-auto active:scale-95 group z-[210] backdrop-blur-sm"
+                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-[#0a1218]/85 border border-slate-800 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/40 hover:shadow-[0_0_20px_rgba(0, 196, 249,0.25)] transition-all duration-300 pointer-events-auto active:scale-95 group z-[210] backdrop-blur-sm"
                   title="Página Siguiente (Flecha Derecha)"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
@@ -2507,7 +2507,7 @@ export default function Brand3DSection() {
                   <button 
                     onClick={handleZoomOut}
                     disabled={zoomScale <= 1}
-                    className="p-1 rounded-lg border border-slate-700/60 text-emerald-400 hover:bg-emerald-500 hover:text-black disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-xs"
+                    className="p-1 rounded-lg border border-slate-700/60 text-emerald-400 hover:bg-brand-primary hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-xs"
                     title="Reducir Zoom"
                   >
                     ➖
@@ -2518,7 +2518,7 @@ export default function Brand3DSection() {
                   <button 
                     onClick={handleZoomIn}
                     disabled={zoomScale >= 4}
-                    className="p-1 rounded-lg border border-slate-700/60 text-emerald-400 hover:bg-emerald-500 hover:text-black disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-xs"
+                    className="p-1 rounded-lg border border-slate-700/60 text-emerald-400 hover:bg-brand-primary hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all font-bold text-xs"
                     title="Aumentar Zoom"
                   >
                     ➕
@@ -2526,7 +2526,7 @@ export default function Brand3DSection() {
                   <div className="w-px h-4 bg-slate-800"></div>
                   <button 
                     onClick={handleZoomReset}
-                    className="p-1 rounded-lg border border-slate-700/60 text-emerald-400 hover:bg-emerald-500 hover:text-black transition-all text-[10px]"
+                    className="p-1 rounded-lg border border-slate-700/60 text-emerald-400 hover:bg-brand-primary hover:text-white transition-all text-[10px]"
                     title="Restablecer"
                   >
                     ↺

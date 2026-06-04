@@ -8,103 +8,103 @@ import { motion, AnimatePresence } from "framer-motion";
 const nodes = [
   { 
     id: 'sjn', 
-    city: "San Juan", 
-    branchName: "Sede Principal - San Juan",
+    city: "San Juan, Capital", 
+    branchName: "Sede Regional - San Juan Capital",
     region: "Región Cuyo", 
-    desc: "Instalación de UPS trifásicas online de respaldo y climatización de precisión para salas técnicas e industrias locales.", 
+    desc: "Sede regional de ingeniería. Proyectos integrales de data center, climatización y energía de respaldo para la industria local.", 
     lat: -31.5375, 
     lng: -68.5364, 
-    status: 'Conexión Directa', 
-    ping: '2ms', 
-    isLocal: true 
-  },
-  { 
-    id: 'igl', 
-    city: "Iglesia, San Juan", 
-    branchName: "Nodo Minero - Iglesia, San Juan",
-    region: "Región Andina Minera", 
-    desc: "Infraestructura robusta de fibra óptica armada y enlaces de contingencia IP67 en altura para campamentos mineros a gran escala.", 
-    lat: -30.3019, 
-    lng: -69.2133, 
     status: 'Operativo', 
-    ping: '14ms' 
+    ping: '8ms' 
   },
   { 
-    id: 'caba', 
-    city: "Capital Federal", 
-    branchName: "Switch Central - Capital Federal",
-    region: "Centro Metropolitano", 
-    desc: "Soporte corporativo de alta disponibilidad, despliegues de cableado Cat8 y soporte especializado on-site para data centers bancarios.", 
-    lat: -34.6037, 
-    lng: -58.3816, 
+    id: 'sjb', 
+    city: "San Juan, Barreal", 
+    branchName: "Nodo Cuyo - Barreal",
+    region: "Región Andina / Calingasta", 
+    desc: "Soporte operativo para minería, enlaces de comunicaciones y desarrollo del convenio comunitario en la Región de Calingasta.", 
+    lat: -31.6441, 
+    lng: -69.4533, 
     status: 'Operativo', 
     ping: '12ms' 
   },
   { 
-    id: 'pba', 
-    city: "Buenos Aires", 
-    branchName: "Enlace Provincia - Buenos Aires",
-    region: "Sede Central / GBA", 
-    desc: "Base operativa central corporativa, laboratorios de fusión por arco y testing de equipamiento crítico. Cobertura completa en GBA y provincia.", 
-    lat: -34.9214, 
-    lng: -57.9545, 
+    id: 'caba', 
+    city: "Microcentro, CABA", 
+    branchName: "Enlace Metropolitano - Microcentro",
+    region: "Capital Federal", 
+    desc: "Oficinas de enlace corporativo, preventa comercial y soporte de alta disponibilidad para data centers bancarios y corporativos.", 
+    lat: -34.6037, 
+    lng: -58.3816, 
     status: 'Operativo', 
-    ping: '15ms' 
+    ping: '2ms',
+    isLocal: true 
+  },
+  { 
+    id: 'pba', 
+    city: "Ramos Mejía, Buenos Aires", 
+    branchName: "Casa Central - Ramos Mejía",
+    region: "Sede Central / GBA", 
+    desc: "Casa central corporativa. Laboratorios de fusionado, testing de equipamiento de potencia crítica, logística y distribución nacional.", 
+    lat: -34.6469, 
+    lng: -58.5615, 
+    status: 'Operativo', 
+    ping: '3ms' 
   },
   { 
     id: 'ros', 
-    city: "Rosario", 
-    branchName: "Datacenter - Rosario",
+    city: "Rosario, Santa Fe", 
+    branchName: "Base Rosario - Santa Fe",
     region: "Litoral / Santa Fe", 
-    desc: "Soluciones de alta densidad y CCTV termográfico con analíticas de IA para terminales portuarias agro-exportadoras.", 
+    desc: "Diseño y despliegue de redes industriales, tendido de fibra óptica y videovigilancia inteligente PoE para puertos agro-exportadores.", 
     lat: -32.9468, 
     lng: -60.6393, 
     status: 'Operativo', 
-    ping: '18ms' 
+    ping: '10ms' 
   },
   { 
     id: 'sfe', 
-    city: "Santa Fe", 
-    branchName: "Nodo Litoral - Santa Fe",
-    region: "Región Litoral", 
-    desc: "Distribución de redes industriales OT segregadas para plantas lácteas y de alimentos. Monitoreo ambiental de salas críticas.", 
+    city: "Santa Fe, Capital", 
+    branchName: "Base Santa Fe - Capital",
+    region: "Litoral / Santa Fe", 
+    desc: "Distribución de cableado estructurado, redes lógicas y mantenimiento preventivo contratado para industrias alimenticias.", 
     lat: -31.6333, 
     lng: -60.7000, 
     status: 'Operativo', 
-    ping: '20ms' 
+    ping: '11ms' 
   },
   { 
     id: 'par', 
-    city: "Paraná", 
-    branchName: "Conexión Mesopotamia - Paraná",
-    region: "Región Litoral", 
-    desc: "Diseño e ingeniería en telecomunicaciones, tendidos aéreos e interconexiones redundantes entre data centers gubernamentales.", 
+    city: "Paraná, Entre Ríos", 
+    branchName: "Base Paraná - Entre Ríos",
+    region: "Litoral / Entre Ríos", 
+    desc: "Instalación de enlaces de comunicaciones redundantes y mantenimiento de redes troncales para el sector público y privado.", 
     lat: -31.7319, 
     lng: -60.5288, 
     status: 'Operativo', 
-    ping: '22ms' 
+    ping: '13ms' 
   },
   { 
     id: 'cal', 
-    city: "Caleta Olivia", 
-    branchName: "Base Sur - Caleta Olivia",
-    region: "Patagonia Atlántica", 
-    desc: "Redes industriales robustas y videovigilancia inteligente PoE para puertos, logística y bases de soporte energético.", 
+    city: "Caleta Olivia, Santa Cruz", 
+    branchName: "Base Patagonia - Caleta Olivia",
+    region: "Patagonia / Santa Cruz", 
+    desc: "Redes lógicas y soporte crítico en terreno para bases logísticas, puertos y operaciones de energía en el litoral patagónico.", 
     lat: -46.4412, 
     lng: -67.5273, 
     status: 'Operativo', 
-    ping: '45ms' 
+    ping: '35ms' 
   },
   { 
     id: 'rio', 
-    city: "Río Gallegos", 
+    city: "Río Gallegos, Santa Cruz", 
     branchName: "Hub Austral - Río Gallegos",
-    region: "Patagonia Sur", 
-    desc: "Enlaces de telecomunicaciones e infraestructura de respaldo eléctrico crítico para bases y centros de datos gubernamentales.", 
+    region: "Patagonia / Santa Cruz", 
+    desc: "Mantenimiento de infraestructura eléctrica crítica de respaldo, climatización técnica y enlaces de comunicación en la zona austral.", 
     lat: -51.6226, 
     lng: -69.2181, 
-    status: 'Mantenimiento', 
-    ping: '65ms' 
+    status: 'Operativo', 
+    ping: '42ms' 
   }
 ];
 
@@ -229,7 +229,7 @@ export function CoverageSection() {
       const isHovered = hoveredNode === index;
 
       polyline.setStyle({
-        color: isHovered ? "#10b981" : "#1e293b",
+        color: isHovered ? "#00c4f9" : "#1e293b",
         weight: isHovered ? 2.5 : 0.8,
         dashArray: isHovered ? "8, 4" : "3, 6",
       });
@@ -238,8 +238,8 @@ export function CoverageSection() {
       if (el) {
         if (isHovered) {
           el.classList.add("animate-map-dash");
-          el.setAttribute("stroke", "#10b981");
-          el.setAttribute("filter", "drop-shadow(0px 0px 4px #10b981)");
+          el.setAttribute("stroke", "#00c4f9");
+          el.setAttribute("filter", "drop-shadow(0px 0px 4px #00c4f9)");
         } else {
           el.classList.remove("animate-map-dash");
           el.removeAttribute("filter");
@@ -252,14 +252,14 @@ export function CoverageSection() {
       polylinesRef.current.forEach((polyline) => {
         if (!polyline) return;
         polyline.setStyle({
-          color: "#10b981",
+          color: "#00c4f9",
           weight: 1.5,
           dashArray: "6, 4"
         });
         const el = polyline.getElement();
         if (el) {
           el.classList.add("animate-map-dash");
-          el.setAttribute("stroke", "#10b981");
+          el.setAttribute("stroke", "#00c4f9");
         }
       });
     }
@@ -296,9 +296,9 @@ export function CoverageSection() {
           .animate-pulse-orange { animation: pulseOrange 2s infinite; }
           
           @keyframes pulseGreen {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.75); }
-            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(0, 196, 249, 0.75); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 196, 249, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 196, 249, 0); }
           }
           @keyframes pulseOrange {
             0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.75); }
@@ -341,7 +341,7 @@ export function CoverageSection() {
             
             <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
               Presencia y capacidad <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-green-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-blue to-brand-teal">
                 operativa nacional.
               </span>
             </h2>
@@ -365,7 +365,7 @@ export function CoverageSection() {
                     onClick={() => handleSelectNode(index)}
                     className={`group flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all duration-300 relative overflow-hidden ${
                       hoveredNode === index 
-                        ? "bg-[#0b141b]/95 border-emerald-500/40 text-white shadow-[0_4px_20px_rgba(16,185,129,0.08)] scale-[1.01]" 
+                        ? "bg-[#0b141b]/95 border-emerald-500/40 text-white shadow-[0_4px_20px_rgba(0, 196, 249,0.08)] scale-[1.01]" 
                         : "bg-[#0b141b]/40 border-slate-900/60 text-gray-400 hover:bg-[#0b141b]/70 hover:border-slate-800 hover:text-white"
                     }`}
                   >
@@ -387,7 +387,7 @@ export function CoverageSection() {
                     </div>
                     
                     {/* Status color bar */}
-                    <div className={`w-1.5 h-1.5 rounded-full ${node.status === 'Mantenimiento' ? 'bg-orange-500 group-hover:shadow-[0_0_8px_#f97316]' : 'bg-emerald-500 group-hover:shadow-[0_0_8px_#10b981]'} transition-all duration-300`}></div>
+                    <div className={`w-1.5 h-1.5 rounded-full ${node.status === 'Mantenimiento' ? 'bg-orange-500 group-hover:shadow-[0_0_8px_#f97316]' : 'bg-emerald-500 group-hover:shadow-[0_0_8px_#00c4f9]'} transition-all duration-300`}></div>
                   </button>
                 ))}
               </div>
@@ -403,7 +403,7 @@ export function CoverageSection() {
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             {/* Background Grid Pattern Overlay */}
-            <div className="absolute inset-0 z-0 opacity-[0.03] bg-[radial-gradient(#10b981_1px,transparent_1px)] bg-[size:1.25rem_1.25rem] rounded-3xl pointer-events-none"></div>
+            <div className="absolute inset-0 z-0 opacity-[0.03] bg-[radial-gradient(#00c4f9_1px,transparent_1px)] bg-[size:1.25rem_1.25rem] rounded-3xl pointer-events-none"></div>
 
             {/* Map Top Navigation bar */}
             <div className="relative z-20 w-full flex justify-between items-center bg-slate-950/80 border border-slate-800/80 rounded-2xl p-4 text-xs font-mono select-none backdrop-blur-sm">

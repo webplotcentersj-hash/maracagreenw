@@ -1,137 +1,115 @@
 "use client";
 
 import React, { useState } from "react";
-import { Network, Cable, Server, BatteryCharging, ShieldAlert, ThermometerSnowflake, Wrench, ArrowRight } from "lucide-react";
+import { Server, Cable, BatteryCharging, Wifi, ShieldAlert, ThermometerSnowflake, ArrowRight } from "lucide-react";
+import { HeroSection } from "@/components/ui/feature-carousel";
+import { SS_GALLERY_CAROUSEL } from "@/lib/ss-gallery-images";
 
 export function ServicesSection() {
   const [activeTab, setActiveTab] = useState(0);
 
   const services = [
     {
-      icon: <Network className="w-6 h-6 text-emerald-400" />,
-      title: "Redes y Cableado Estructurado",
-      subtitle: "Conectividad robusta a nivel corporativo",
-      desc: "Diseñamos e implementamos redes de datos de alto rendimiento, estructuradas bajo estándares internacionales de ingeniería. Organizamos y canalizamos tendidos de cobre (Cat6, Cat6A, Cat8) garantizando el máximo rendimiento del canal y cero interferencias.",
+      icon: <Server className="w-6 h-6 text-emerald-400" />,
+      title: "Centro de Cómputos y Redes",
+      subtitle: "Diseño, Implementación y Certificación de Redes y Data Centers",
+      desc: "Diseñamos y equipamos centros de cómputos (Data Centers) y sistemas de redes corporativas de alto rendimiento. Implementamos cableado estructurado en Cat6, Cat6A y Cat8, switches, routers y ordenamiento inteligente para garantizar disponibilidad y escalabilidad operativa.",
       bullets: [
-        "Certificación de puntos de red de cobre Cat6 / Cat6A / Cat8.",
-        "Ordenamiento, etiquetado y peinado de racks y gabinetes técnicos.",
-        "Sistemas de canalización aérea y subterránea (bandejas, ductos).",
-        "Configuración lógica de switches, routers corporativos y VLANs."
+        "Obra civil y diseño de Data Centers bajo normativas ANSI/TIA-942 e Uptime Institute.",
+        "Cableado estructurado de datos (Cat6 / Cat6A / Cat8) con certificación oficial Fluke Networks.",
+        "Suministro, montaje y configuración de equipamiento activo (Switches, Routers, Access Points y Firewalls).",
+        "Pisos técnicos elevados, racks auto-soportados y bandejas portacables aéreas/subterráneas."
       ],
-      keywords: ["cableado estructurado", "redes corporativas", "infraestructura de red", "instalación de redes empresariales"],
-      features: "Normativa ANSI/TIA-568-D y certificación Fluke Networks.",
-      image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=600&auto=format&fit=crop"
+      keywords: ["centro de cómputos", "cableado estructurado", "data centers", "switches y routers", "ANSI/TIA-942"],
+      features: "Certificación FLUKE e ingeniería de diseño certificada.",
+      image: "/ss/Imagen43.jpg"
     },
     {
       icon: <Cable className="w-6 h-6 text-emerald-400" />,
-      title: "Fibra Óptica",
-      subtitle: "Enlaces de alta velocidad a distancias ilimitadas",
-      desc: "Realizamos tendido, instalación, fusión por arco voltaico y mantenimiento de redes de fibra óptica multimodo y monomodo para conectar naves industriales, oficinas, campus y enlaces de larga distancia con atenuación nula.",
+      title: "Tendido de Fibra Óptica",
+      subtitle: "Diseño, Fusión, Certificación y Mantenimiento de Enlaces",
+      desc: "Implementamos tendidos de fibra óptica multimodo (MM) y monomodo (SM) para interconectar plantas, naves industriales y sedes corporativas. Contamos con fusionadoras propias por arco voltaico e instrumental OTDR de última generación.",
       bullets: [
-        "Fusión de fibra óptica monomodo (SM) y multimodo (MM).",
-        "Tendido aéreo, subterráneo e interno para alta densidad.",
-        "Pruebas de atenuación y certificación OTDR de enlaces.",
-        "Conectividad Backbone para interconexión de salas técnicas."
+        "Fusión por arco voltaico con niveles de atenuación mínimos certificados (< 0.02 dB).",
+        "Tendido aéreo, subterráneo, interno y de planta externa de alta durabilidad.",
+        "Certificación de enlaces ópticos con equipos OTDR y Power Meters calibrados.",
+        "Guardias técnicas 24/7 y contratos de mantenimiento preventivo y correctivo ante cortes."
       ],
-      keywords: ["tendido de fibra óptica", "instalación de fibra óptica", "conectividad empresarial"],
-      features: "Fusiones por núcleo con fusionadoras de precisión certificadas.",
-      image: "https://images.unsplash.com/photo-1551703551-3850527f625c?q=80&w=600&auto=format&fit=crop"
-    },
-    {
-      icon: <Server className="w-6 h-6 text-emerald-400" />,
-      title: "Data Centers",
-      subtitle: "Salas de servidores preparadas para alta disponibilidad",
-      desc: "Especialistas en el diseño tridimensional, optimización, ordenamiento y equipamiento de centros de datos corporativos e industriales. Garantizamos la redundancia física y la eficiencia en el flujo del aire caliente/frío.",
-      bullets: [
-        "Planificación y obra civil de salas técnicas (muros cortafuego).",
-        "Suministro e instalación de gabinetes racks inteligentes (PDU).",
-        "Pisos técnicos elevados y distribución inteligente de cableado.",
-        "Monitoreo ambiental inteligente de temperatura y humedad en racks."
-      ],
-      keywords: ["data center", "infraestructura para data center", "salas de servidores", "alta disponibilidad"],
-      features: "Diseños alineados a estándares Uptime Institute Tier II y Tier III.",
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=600&auto=format&fit=crop"
+      keywords: ["tendido de fibra óptica", "fusión de fibra", "certificación OTDR", "backbone óptico"],
+      features: "Fusión de precisión e informes reflectométricos detallados.",
+      image: "/ss/ChatGPT%20Image%204%20jun%202026%2C%2009_28_14.png"
     },
     {
       icon: <BatteryCharging className="w-6 h-6 text-emerald-400" />,
-      title: "Energía Crítica",
-      subtitle: "Continuidad eléctrica absoluta ante cualquier apagón",
-      desc: "Diseñamos soluciones eléctricas de respaldo redundante e infraestructura de energía para proteger sistemas informáticos, servidores y maquinaria ante fluctuaciones y cortes totales del suministro comercial.",
+      title: "Electricidad, Generación y Respaldo de Energía",
+      subtitle: "Sistemas de Energía Ininterrumpida y Calidad de Potencia",
+      desc: "Aseguramos el suministro eléctrico continuo para proteger tus servidores, redes y maquinarias críticas. Diseñamos tableros eléctricos, llaves de transferencia automática (TTA) e instalamos sistemas de UPS industriales y grupos electrógenos.",
       bullets: [
-        "Instalación de UPS corporativas online de doble conversión.",
-        "Integración de grupos electrógenos con tableros de transferencia automática (TTA).",
-        "Tableros eléctricos de distribución dedicados para IT.",
-        "Sistemas de puesta a tierra de precisión para protección de hardware."
+        "Instalación y mantenimiento de UPS corporativas (trifásicas/monofásicas) y bancos de baterías.",
+        "Suministro e instalación de Grupos Electrógenos con Tableros de Transferencia Automática (TTA).",
+        "Montaje de tableros eléctricos de distribución de potencia y circuitos estabilizados.",
+        "Diseño, medición, puesta a tierra de seguridad y certificación según normativas AEA."
       ],
-      keywords: ["energía crítica", "UPS para empresas", "respaldo energético", "continuidad eléctrica"],
-      features: "Sistemas de conmutación estática rápida (ATS) con tiempo de transferencia cero.",
-      image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=600&auto=format&fit=crop"
+      keywords: ["energía de respaldo", "UPS modulares", "grupos electrógenos", "puesta a tierra", "transferencia automática"],
+      features: "Certificación de puesta a tierra y tableros bajo normativa AEA.",
+      image: "/ss/Imagen44.jpg"
+    },
+    {
+      icon: <Wifi className="w-6 h-6 text-emerald-400" />,
+      title: "Telecomunicaciones",
+      subtitle: "Infraestructura de Conectividad, Enlaces Inalámbricos y Voz IP",
+      desc: "Proporcionamos soluciones de conectividad inalámbrica y redes de voz y datos corporativas. Diseñamos radioenlaces punto a punto y multipunto, sistemas de telefonía IP corporativa y redes Wi-Fi de alta densidad.",
+      bullets: [
+        "Diseño, cálculo e instalación de Radioenlaces inalámbricos de alta disponibilidad y largo alcance.",
+        "Redes Wi-Fi corporativas de alta densidad y sistemas de controladora centralizada.",
+        "Telefonía IP (VoIP) y configuración de centrales telefónicas de última generación.",
+        "Suministro, montaje de mástiles, torres de telecomunicaciones y sistemas de pararrayos."
+      ],
+      keywords: ["telecomunicaciones", "radioenlaces", "Wi-Fi corporativo", "Voz sobre IP", "torres de comunicación"],
+      features: "Redes inalámbricas gestionadas y radioenlaces certificados de nivel carrier.",
+      image: "/ss/Imagen13.png"
     },
     {
       icon: <ShieldAlert className="w-6 h-6 text-emerald-400" />,
-      title: "Seguridad Electrónica",
-      subtitle: "Protección integral para infraestructura, activos y personal",
-      desc: "Integramos tecnologías avanzadas de videovigilancia inteligente, control de accesos biométrico y seguridad perimetral para blindar tus instalaciones físicas contra intrusiones no autorizadas.",
+      title: "Sistemas de Seguridad",
+      subtitle: "Control de Accesos Biométrico, CCTV IP y Detección de Intrusos",
+      desc: "Protegemos tus activos físicos e instalaciones mediante sistemas inteligentes de seguridad electrónica integrados. Diseñamos e instalamos cámaras IP con analíticas de inteligencia artificial y controles de acceso biométricos unificados.",
       bullets: [
-        "Sistemas de CCTV IP con analítica de video avanzada e IA.",
-        "Control de accesos por biometría, tarjeta y reconocimiento facial.",
-        "Sistemas de detección temprana de incendios (sensores, alarmas).",
-        "Integración unificada bajo consolas centrales de monitoreo."
+        "Sistemas de CCTV IP de alta definición con analítica de vídeo (reconocimiento facial y patentes).",
+        "Control de Accesos y Presentismo mediante biometría (facial, huella), RFID y códigos QR dinámicos.",
+        "Integración centralizada de sistemas de seguridad física bajo plataformas como Suprema (BioStar) y Hikvision.",
+        "Sistemas de intrusión perimetral, sensores de doble tecnología y detección de incendios direccionable."
       ],
-      keywords: ["seguridad electrónica", "CCTV empresas", "control de acceso", "cámaras de seguridad"],
-      features: "Sistemas autónomos de seguridad con alimentación PoE y respaldo crítico.",
-      image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=600&auto=format&fit=crop"
+      keywords: ["sistemas de seguridad", "CCTV IP", "control de accesos", "reconocimiento facial", "Suprema BioStar"],
+      features: "Sistemas unificados e integrados con técnicos certificados Hikvision y Suprema.",
+      image: "/ss/Imagen15.png"
     },
     {
       icon: <ThermometerSnowflake className="w-6 h-6 text-emerald-400" />,
-      title: "Climatización Técnica",
-      subtitle: "Refrigeración constante para salas de alta temperatura",
-      desc: "El hardware de alto desempeño genera calor extremo. Diseñamos e instalamos climatización térmica de precisión para disipar la carga calórica constante de salas técnicas y data centers empresariales de forma eficiente.",
+      title: "Refrigeración y Calefacción",
+      subtitle: "Sistemas de Refrigeración de Precisión e Industrial HVAC",
+      desc: "Controlamos y regulamos las condiciones de temperatura y humedad en salas de servidores y oficinas técnicas. Diseñamos sistemas de pasillo frío/caliente, conductos de distribución y equipos HVAC de precisión para garantizar la vida útil de tus equipos.",
       bullets: [
-        "Instalación de aire acondicionado de precisión para IT.",
-        "Configuración de pasillo frío y pasillo caliente en data centers.",
-        "Sistemas In-Row de climatización localizada entre racks.",
-        "Mantenimiento térmico para prevenir sobrecalentamientos fatales."
+        "Equipos de refrigeración de precisión In-Row y perimetrales para contención térmica en Data Centers.",
+        "Sistemas de climatización central comercial e industrial (sistemas VRF, Rooftops, chillers).",
+        "Control inteligente de humedad relativa y temperatura constante las 24 horas.",
+        "Mantenimiento predictivo térmico con auditorías de termografía infrarroja y refacciones originales."
       ],
-      keywords: ["climatización técnica", "refrigeración para data center", "climatización para salas de servidores"],
-      features: "Control de humedad automático y operaciones 24/7 sin paros por ciclo.",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=600&auto=format&fit=crop"
-    },
-    {
-      icon: <Wrench className="w-6 h-6 text-emerald-400" />,
-      title: "Soporte y Mantenimiento",
-      subtitle: "Respaldo de ingeniería en campo las 24 horas",
-      desc: "Nuestros ingenieros operan como tu departamento de soporte de nivel superior. Brindamos pólizas de mantenimiento preventivo y correctivo con acuerdos de nivel de servicio (SLA) rigurosos para la estabilidad de tu infraestructura.",
-      bullets: [
-        "Pólizas de soporte con SLAs adaptables de 4 a 24 horas en terreno.",
-        "Mantenimientos preventivos programados de tableros, UPS y fibra.",
-        "Resolución de fallas urgentes físicas y lógicas.",
-        "Monitoreo IT preventivo remoto de estabilidad de red."
-      ],
-      keywords: ["soporte técnico empresarial", "mantenimiento de infraestructura tecnológica", "monitoreo IT"],
-      features: "Ingenieros especializados con herramientas y repuestos de contingencia.",
-      image: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=600&auto=format&fit=crop"
+      keywords: ["climatización técnica", "aire de precisión", "sistemas VRF", "HVAC industrial", "termografía"],
+      features: "Guardia técnica permanente y control de humedad de precisión industrial.",
+      image: "/ss/Imagen32.jpg"
     }
   ];
 
   return (
     <section id="servicios" className="relative py-24 md:py-32 bg-[#061014] text-white overflow-hidden">
-      {/* Premium Background Video & Overlay */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src="/Portada%20Facebook%20Servicios%20Autolavado%20Moderno%20Azul.mp4" type="video/mp4" />
-        </video>
-        {/* Sleek Dark Cyber-Overlay */}
-        <div className="absolute inset-0 bg-[#061014]/85 backdrop-blur-[3.5px] z-0"></div>
-        {/* Soft edge blending gradients */}
-        <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#061014] to-transparent z-0"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#061014] to-transparent z-0"></div>
+      {/* Premium Solid Blue Gradient Background */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#041219] via-[#0b2434] to-[#041219] pointer-events-none">
+        {/* Sleek Cyber Grid overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0, 196, 249,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0, 196, 249,0.03)_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-25" />
+        {/* Soft radial glows */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[140px]" />
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-[#00c4f9]/5 rounded-full blur-[120px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8">
@@ -152,15 +130,41 @@ export function ServicesSection() {
         {/* Tabbed Interactive Services Area */}
         <div className="flex flex-col lg:flex-row gap-8 items-stretch">
           
-          {/* Service Left Nav tabs */}
-          <div className="w-full lg:w-2/5 flex flex-col gap-3">
+          {/* Columna izquierda: galería asimétrica + navegación */}
+          <div className="w-full lg:w-2/5 flex flex-col gap-6 lg:gap-8">
+            {/* Carrusel 3D — layout asimétrico */}
+            <div className="relative w-full">
+              <div
+                className="absolute -top-3 -right-2 lg:-right-6 w-[88%] h-full rounded-2xl border border-emerald-500/15 bg-emerald-500/5 rotate-3 pointer-events-none"
+                aria-hidden
+              />
+              <div
+                className="absolute -bottom-2 -left-3 lg:-left-6 w-[92%] h-full rounded-2xl border border-[#00c4f9]/10 bg-[#00c4f9]/5 -rotate-2 pointer-events-none"
+                aria-hidden
+              />
+              <div className="relative z-10 -rotate-1 lg:-rotate-[1.5deg] translate-x-1 lg:translate-x-4 rounded-xl overflow-hidden border border-emerald-500/25 bg-[#0b141b]/60 shadow-[0_16px_48px_rgba(0,0,0,0.45)] px-2 pt-3 pb-2">
+                <HeroSection
+                  compact
+                  title="Portafolio // Infraestructura"
+                  subtitle="Proyectos reales en data centers, fibra, energía y seguridad."
+                  images={SS_GALLERY_CAROUSEL}
+                  autoPlay
+                  autoPlayInterval={4500}
+                  className="w-full"
+                />
+              </div>
+              <div className="absolute -bottom-1 right-6 lg:right-10 w-12 h-12 border-r-2 border-b-2 border-emerald-500/40 rounded-br-lg pointer-events-none z-20" aria-hidden />
+            </div>
+
+            {/* Pestañas de servicios — desplazadas al lado opuesto */}
+            <div className="flex flex-col gap-3 lg:translate-x-6 lg:-mt-2 relative z-10">
             {services.map((service, index) => (
               <button
                 key={index}
                 onClick={() => setActiveTab(index)}
                 className={`flex items-center gap-4 text-left p-4.5 rounded-xl border transition-all duration-300 ${
                   activeTab === index
-                    ? "bg-[#0b141b]/90 border-emerald-500/30 text-white shadow-[0_4px_20px_rgba(16,185,129,0.08)] scale-[1.01]"
+                    ? "bg-[#0b141b]/90 border-emerald-500/30 text-white shadow-[0_4px_20px_rgba(0, 196, 249,0.08)] scale-[1.01]"
                     : "bg-[#0b141b]/40 border-slate-900/60 text-gray-400 hover:bg-[#0b141b]/60 hover:text-white hover:border-slate-800"
                 }`}
               >
@@ -180,6 +184,7 @@ export function ServicesSection() {
                 <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${activeTab === index ? "translate-x-1 text-emerald-400" : "text-gray-600 group-hover:text-gray-400"}`} />
               </button>
             ))}
+            </div>
           </div>
 
           {/* Service Detail Box */}
@@ -225,7 +230,7 @@ export function ServicesSection() {
 
               {/* Right Column: Premium Cyber Image */}
               <div className="w-full md:w-[240px] lg:w-[280px] flex-shrink-0 self-center md:self-start mt-6 md:mt-0">
-                <div className="relative group rounded-xl overflow-hidden border border-emerald-500/30 bg-[#061014]/90 shadow-[0_0_20px_rgba(16,185,129,0.1)] transition-all duration-500 hover:border-emerald-500/60">
+                <div className="relative group rounded-xl overflow-hidden border border-emerald-500/30 bg-[#061014]/90 shadow-[0_0_20px_rgba(0, 196, 249,0.1)] transition-all duration-500 hover:border-emerald-500/60">
                   {/* Decorative Scan Lines / HUD overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/20 to-transparent pointer-events-none z-10"></div>
                   <div className="absolute inset-x-0 top-0 h-[1px] bg-emerald-500/30 animate-pulse pointer-events-none z-10"></div>

@@ -3,106 +3,107 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
+import { BrandPaletteAccent } from "@/components/ui/brand-palette-accent";
 
 // Unified 9 network hubs mapped with precise real-world latitudes and longitudes
 const nodes = [
   { 
     id: 'sjn', 
-    city: "San Juan", 
-    branchName: "Sede Principal - San Juan",
+    city: "San Juan, Capital", 
+    branchName: "Sede Regional - San Juan Capital",
     region: "Región Cuyo", 
     lat: -31.5375, 
     lng: -68.5364, 
-    status: 'Conexión Directa', 
-    ping: '2ms',
-    isHQ: false
-  },
-  { 
-    id: 'igl', 
-    city: "Iglesia, San Juan", 
-    branchName: "Nodo Minero - Iglesia",
-    region: "Región Andina Minera", 
-    lat: -30.3019, 
-    lng: -69.2133, 
     status: 'Operativo', 
-    ping: '14ms',
+    ping: '8ms',
     isHQ: false
   },
   { 
-    id: 'caba', 
-    city: "Capital Federal", 
-    branchName: "Switch Central - CABA",
-    region: "Centro Metropolitano", 
-    lat: -34.6037, 
-    lng: -58.3816, 
+    id: 'sjb', 
+    city: "San Juan, Barreal", 
+    branchName: "Nodo Cuyo - Barreal",
+    region: "Región Andina / Calingasta", 
+    lat: -31.6441, 
+    lng: -69.4533, 
     status: 'Operativo', 
     ping: '12ms',
     isHQ: false
   },
   { 
-    id: 'pba', 
-    city: "Buenos Aires", 
-    branchName: "Sede Central - Ramos Mejía",
-    region: "Sede Central / GBA", 
-    lat: -34.9214, 
-    lng: -57.9545, 
+    id: 'caba', 
+    city: "Microcentro, CABA", 
+    branchName: "Enlace Metropolitano - Microcentro",
+    region: "Capital Federal", 
+    lat: -34.6037, 
+    lng: -58.3816, 
     status: 'Operativo', 
-    ping: '15ms',
+    ping: '2ms',
+    isHQ: false
+  },
+  { 
+    id: 'pba', 
+    city: "Ramos Mejía, Buenos Aires", 
+    branchName: "Casa Central - Ramos Mejía",
+    region: "Sede Central / GBA", 
+    lat: -34.6469, 
+    lng: -58.5615, 
+    status: 'Operativo', 
+    ping: '3ms',
     isHQ: true 
   },
   { 
     id: 'ros', 
-    city: "Rosario", 
-    branchName: "Datacenter - Rosario",
+    city: "Rosario, Santa Fe", 
+    branchName: "Base Rosario - Santa Fe",
     region: "Litoral / Santa Fe", 
     lat: -32.9468, 
     lng: -60.6393, 
     status: 'Operativo', 
-    ping: '18ms',
+    ping: '10ms',
     isHQ: false
   },
   { 
     id: 'sfe', 
-    city: "Santa Fe", 
-    branchName: "Nodo Litoral - Santa Fe",
-    region: "Región Litoral", 
+    city: "Santa Fe, Capital", 
+    branchName: "Base Santa Fe - Capital",
+    region: "Litoral / Santa Fe", 
     lat: -31.6333, 
     lng: -60.7000, 
     status: 'Operativo', 
-    ping: '20ms',
+    ping: '11ms',
     isHQ: false
   },
   { 
     id: 'par', 
-    city: "Paraná", 
-    branchName: "Conexión Mesopotamia - Paraná",
-    region: "Región Litoral", 
+    city: "Paraná, Entre Ríos", 
+    branchName: "Base Paraná - Entre Ríos",
+    region: "Litoral / Entre Ríos", 
     lat: -31.7319, 
     lng: -60.5288, 
     status: 'Operativo', 
-    ping: '22ms',
+    ping: '13ms',
     isHQ: false
   },
   { 
     id: 'cal', 
-    city: "Caleta Olivia", 
-    branchName: "Base Sur - Caleta Olivia",
-    region: "Patagonia Atlántica", 
+    city: "Caleta Olivia, Santa Cruz", 
+    branchName: "Base Patagonia - Caleta Olivia",
+    region: "Patagonia / Santa Cruz", 
     lat: -46.4412, 
     lng: -67.5273, 
     status: 'Operativo', 
-    ping: '45ms',
+    ping: '35ms',
     isHQ: false
   },
   { 
     id: 'rio', 
-    city: "Río Gallegos", 
+    city: "Río Gallegos, Santa Cruz", 
     branchName: "Hub Austral - Río Gallegos",
-    region: "Patagonia Sur", 
+    region: "Patagonia / Santa Cruz", 
     lat: -51.6226, 
     lng: -69.2181, 
-    status: 'Mantenimiento', 
-    ping: '65ms',
+    status: 'Operativo', 
+    ping: '42ms',
     isHQ: false
   }
 ];
@@ -228,11 +229,12 @@ export function FooterSection() {
   }, [hqHovered]);
 
   return (
-    <footer className="relative bg-[#04080c] text-white pt-20 pb-12 border-t border-emerald-500/10 shadow-[0_-8px_40px_rgba(16,185,129,0.06)] overflow-hidden">
+    <footer className="relative bg-[#04080c] text-white pt-20 pb-12 border-t border-brand-primary/10 shadow-[0_-8px_40px_rgba(0,196,249,0.06)] overflow-hidden">
+      <BrandPaletteAccent variant="strip" className="absolute top-0 inset-x-0" />
       
       {/* Background ambient glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-lime/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Styled overrides for Leaflet map elements and scanner line */}
       <style dangerouslySetInnerHTML={{ __html: `
@@ -241,9 +243,9 @@ export function FooterSection() {
         .animate-pulse-orange { animation: pulseOrange 2s infinite; }
         
         @keyframes pulseGreen {
-          0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.75); }
-          70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-          100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+          0% { box-shadow: 0 0 0 0 rgba(0, 196, 249, 0.75); }
+          70% { box-shadow: 0 0 0 8px rgba(0, 196, 249, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(0, 196, 249, 0); }
         }
         @keyframes pulseOrange {
           0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.75); }
@@ -279,7 +281,7 @@ export function FooterSection() {
               Especialistas en ingeniería e infraestructura tecnológica integral para organizaciones que necesitan operar sin interrupciones. Conectando y protegiendo el futuro digital de las empresas más exigentes de la Argentina.
             </p>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2.5">
               <div className="inline-flex items-center gap-2 w-fit px-3 py-1 bg-emerald-950/40 border border-emerald-500/20 rounded-md text-[11px] font-mono text-emerald-400">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 animate-pulse" />
                 <span>INFRAESTRUCTURA DE ALTA DISPONIBILIDAD</span>
@@ -287,6 +289,15 @@ export function FooterSection() {
               <div className="inline-flex items-center gap-2 w-fit px-3 py-1 bg-slate-950/40 border border-slate-800/20 rounded-md text-[10px] font-mono text-slate-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>SISTEMA: ONLINE // REDUNDANCIA ACTIVA</span>
+              </div>
+              <div className="pt-2">
+                <Link
+                  href="#marca"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-[10px] uppercase tracking-widest font-bold text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 rounded-xl hover:bg-emerald-500/10 hover:border-emerald-400/50 transition-all duration-300 shadow-[0_0_15px_rgba(0, 196, 249,0.05)] w-fit"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#00c4f9]"></span>
+                  Visualizar Marca 3D
+                </Link>
               </div>
             </div>
           </div>
@@ -302,7 +313,8 @@ export function FooterSection() {
                 { href: "#servicios", label: "Servicios Principales", num: "02" },
                 { href: "#data-centers", label: "Data Centers & Racks", num: "03" },
                 { href: "#industrias", label: "Soluciones Industriales", num: "04" },
-                { href: "#proyectos", label: "Casos de Éxito", num: "05" }
+                { href: "#proyectos", label: "Casos de Éxito", num: "05" },
+                { href: "#marca", label: "Marca 3D (Modelo)", num: "06" }
               ].map((item, idx) => (
                 <li key={idx}>
                   <Link href={item.href} className="hover:text-emerald-400 transition-all duration-300 flex items-center gap-2 group">
@@ -360,7 +372,7 @@ export function FooterSection() {
             <div className="relative border border-slate-800/80 bg-slate-950/40 backdrop-blur-md rounded-xl overflow-hidden h-[180px] hover:border-emerald-500/20 transition-all duration-500 group shadow-inner">
               
               {/* Radar grid backdrop */}
-              <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] bg-[size:10px_10px] opacity-[0.03] pointer-events-none z-20"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(#00c4f9_1px,transparent_1px)] bg-[size:10px_10px] opacity-[0.03] pointer-events-none z-20"></div>
 
               {/* Leaflet map holder */}
               {!leafletLoaded ? (

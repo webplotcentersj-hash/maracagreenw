@@ -52,7 +52,7 @@ export function ProjectsSection() {
           </div>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
             Proyectos que sostienen <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-blue to-brand-teal">
               operaciones reales en el país.
             </span>
           </h2>

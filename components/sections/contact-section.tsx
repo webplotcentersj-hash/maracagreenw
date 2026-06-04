@@ -23,7 +23,7 @@ const KNOWLEDGE_BASE: Intent[] = [
   },
   {
     keywords: ["servicio", "servicios", "que hacen", "ofrecen", "ingenieria", "portafolio", "solucion", "soluciones", "trabajos", "obra", "obras"],
-    response: "En **Green Working S.A.** desarrollamos soluciones de infraestructura tecnológica de nivel industrial. Nuestro catálogo abarca:\n\n* **Redes y Cableado Estructurado**: Diseño de tendidos de Cat6, Cat6A y Cat8 de alta densidad.\n* **Fibra Óptica**: Tendidos aéreos, subterráneos y fusiones por arco voltaico en planta interna y externa.\n* **Data Centers y Salas Técnicas**: Construcción 'llave en mano', pasillos fríos/calientes y cerramientos de contención.\n* **Energía Crítica e Ininterrumpida**: Sistemas de UPS modulares, bancos de baterías y grupos electrógenos.\n* **Climatización de Precisión**: Equipos de aire acondicionado técnicos para control exacto de humedad y temperatura (HVAC).\n* **Seguridad Electrónica**: CCTV IP, control de accesos biométrico e intrusión para plantas industriales.\n\n¿Te interesaría recibir asesoramiento específico sobre alguno de estos servicios?"
+    response: "En **Green Working S.A.** desarrollamos soluciones de infraestructura tecnológica de nivel industrial. Nuestro catálogo abarca:\n\n* **Centro de Cómputos y Redes**: Diseño e implementación de redes y Data Centers de alto rendimiento.\n* **Tendido de Fibra Óptica**: Tendidos aéreos, subterráneos y fusión por arco voltaico.\n* **Electricidad, Generación y Respaldo de Energía**: Grupos electrógenos, sistemas de energía ininterrumpida (UPS) y tableros de transferencia.\n* **Telecomunicaciones**: Radioenlaces, redes Wi-Fi de alta densidad y telefonía IP.\n* **Sistemas de Seguridad**: CCTV IP con IA, control de accesos biométrico e intrusión.\n* **Refrigeración y Calefacción**: Sistemas de precisión para data centers y climatización comercial/industrial HVAC.\n\n¿Te interesaría recibir asesoramiento específico sobre alguno de estos servicios?"
   },
   {
     keywords: ["fibra", "optica", "optico", "opticos", "tendido", "fusion", "fusiones", "otdr"],
@@ -304,7 +304,7 @@ export function ContactSection() {
               
               <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
                 Prepará tu empresa para <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-blue to-brand-teal">
                   operar sin interrupciones.
                 </span>
               </h2>
@@ -385,7 +385,7 @@ export function ContactSection() {
 
             {submitted ? (
               <div className="py-16 flex flex-col items-center justify-center text-center space-y-4 animate-scale-in">
-                <div className="w-16 h-16 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <div className="w-16 h-16 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-400 flex items-center justify-center shadow-[0_0_20px_rgba(0, 196, 249,0.3)]">
                   <Check className="w-8 h-8" />
                 </div>
                 <h4 className="text-xl font-extrabold text-white">¡Solicitud Recibida Correctamente!</h4>
@@ -451,13 +451,12 @@ export function ContactSection() {
                     onChange={(e) => setFormData({...formData, service: e.target.value})}
                     className="w-full px-4 py-3 border border-slate-800/80 rounded-xl bg-slate-950/70 text-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 text-sm font-light transition-all duration-300"
                   >
-                    <option value="redes">Redes & Cableado Estructurado</option>
+                    <option value="redes">Centro de Cómputos y Redes</option>
                     <option value="fibra">Tendido de Fibra Óptica</option>
-                    <option value="data-centers">Data Centers & Salas Técnicas</option>
-                    <option value="energia">Energía Crítica & UPS modulares</option>
-                    <option value="seguridad">Seguridad Electrónica & CCTV / Accesos</option>
-                    <option value="climatizacion">Climatización Técnica de Precisión</option>
-                    <option value="soporte">Pólizas de Soporte & Mantenimiento</option>
+                    <option value="energia">Electricidad, Generación y Respaldo de Energía</option>
+                    <option value="telecomunicaciones">Telecomunicaciones</option>
+                    <option value="seguridad">Sistemas de Seguridad</option>
+                    <option value="climatizacion">Refrigeración y Calefacción</option>
                   </select>
                 </div>
 
@@ -474,7 +473,7 @@ export function ContactSection() {
 
                 <button 
                   type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold rounded-xl text-center shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.45)] hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
+                  className="w-full py-4 bg-brand-primary hover:bg-brand-teal text-white font-bold rounded-xl text-center shadow-[0_0_20px_rgba(0,196,249,0.25)] hover:shadow-[0_0_30px_rgba(0,196,249,0.45)] hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
                 >
                   <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
                   <span>Enviar Solicitud a Ingeniería</span>
@@ -492,7 +491,7 @@ export function ContactSection() {
         {!chatOpen ? (
           <button 
             onClick={() => setChatOpen(true)}
-            className="flex items-center gap-2.5 px-5 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-[0_10px_35px_rgba(16,185,129,0.4)] border border-emerald-400/30 hover:scale-105 transition-all duration-300 group"
+            className="flex items-center gap-2.5 px-5 py-4 bg-brand-primary hover:bg-brand-teal text-white rounded-full shadow-[0_10px_35px_rgba(0,196,249,0.4)] border border-brand-primary-light/30 hover:scale-105 transition-all duration-300 group"
           >
             <div className="relative">
               <Bot className="w-5 h-5 text-white animate-pulse" />
@@ -512,7 +511,7 @@ export function ContactSection() {
               <div className="flex items-center gap-2.5">
                 <div className="relative w-8 h-8 rounded-lg bg-emerald-950/50 border border-emerald-500/30 flex items-center justify-center">
                   <Bot className="w-4 h-4 text-emerald-400" />
-                  <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950 shadow-[0_0_8px_#10b981] animate-pulse"></span>
+                  <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950 shadow-[0_0_8px_#00c4f9] animate-pulse"></span>
                 </div>
                 <div>
                   <h4 className="text-[10px] font-bold tracking-wider font-mono text-white uppercase">GW-BOT // INTELLIGENCE</h4>
@@ -539,7 +538,7 @@ export function ContactSection() {
                 >
                   <div className={`max-w-[85%] rounded-xl px-4 py-3 text-xs leading-relaxed ${
                     msg.sender === "user" 
-                      ? "bg-emerald-600 text-white rounded-tr-none shadow-[0_4px_15px_rgba(16,185,129,0.15)]"
+                      ? "bg-brand-primary text-white rounded-tr-none shadow-[0_4px_15px_rgba(0,196,249,0.15)]"
                       : "bg-slate-950/70 border border-slate-800/80 text-gray-200 rounded-tl-none backdrop-blur-md"
                   }`}>
                     {msg.sender === "bot" ? (
@@ -608,7 +607,7 @@ export function ContactSection() {
               <button 
                 type="submit"
                 disabled={!inputValue.trim() || isTyping}
-                className="w-9 h-9 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-900 disabled:text-gray-600 text-white rounded-xl flex items-center justify-center shadow-[0_4px_10px_rgba(16,185,129,0.2)] hover:scale-105 transition-all"
+                className="w-9 h-9 bg-brand-primary hover:bg-brand-teal disabled:bg-slate-900 disabled:text-gray-600 text-white rounded-xl flex items-center justify-center shadow-[0_4px_10px_rgba(0,196,249,0.2)] hover:scale-105 transition-all"
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
