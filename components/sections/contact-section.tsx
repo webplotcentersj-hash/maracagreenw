@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Mail, Phone, MapPin, Send, MessageSquare, Check, Bot, X } from "lucide-react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Send, Check, Bot, X } from "lucide-react";
 import { NeutrinoBackground } from "@/components/ui/neutrino-background";
+import type { ChatTurn } from "@/lib/greenworking-assistant";
 
 interface ChatMessage {
   id: string;
@@ -11,107 +12,32 @@ interface ChatMessage {
   timestamp: Date;
 }
 
-interface Intent {
-  keywords: string[];
-  response: string;
+const WELCOME_MESSAGE =
+  "¡Hola! Soy el **Asistente IA de Green Working**. Estoy acá para ayudarte con consultas sobre servicios, urgencias, cobertura nacional, cotizaciones y contacto con nuestro equipo de ingeniería.\n\nContame qué necesita tu empresa y te oriento paso a paso.";
+
+async function requestAssistantReply(message: string, history: ChatTurn[]): Promise<{ reply: string; mode: string }> {
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message, history }),
+  });
+
+  const data = (await response.json()) as { reply?: string; mode?: string; error?: string };
+  if (!response.ok || !data.reply) {
+    throw new Error(data.error || "No se pudo obtener respuesta");
+  }
+
+  return { reply: data.reply, mode: data.mode || "local" };
 }
 
-const KNOWLEDGE_BASE: Intent[] = [
-  {
-    keywords: ["hola", "buen", "dia", "tarde", "noche", "saludos", "que tal", "alguien"],
-    response: "¡Hola! Un gusto saludarte. Soy el **Asistente de Inteligencia Artificial de Green Working S.A.**\n\nEstoy capacitado para brindarte información técnica e institucional sobre nuestros servicios de infraestructura de telecomunicaciones, energía crítica, climatización técnica de precisión y soporte técnico corporativo.\n\n¿En qué puedo asistirte hoy?"
-  },
-  {
-    keywords: ["servicio", "servicios", "que hacen", "ofrecen", "ingenieria", "portafolio", "solucion", "soluciones", "trabajos", "obra", "obras"],
-    response: "En **Green Working S.A.** desarrollamos soluciones de infraestructura tecnológica de nivel industrial. Nuestro catálogo abarca:\n\n* **Centro de Cómputos y Redes**: Diseño e implementación de redes y Data Centers de alto rendimiento.\n* **Tendido de Fibra Óptica**: Tendidos aéreos, subterráneos y fusión por arco voltaico.\n* **Electricidad, Generación y Respaldo de Energía**: Grupos electrógenos, sistemas de energía ininterrumpida (UPS) y tableros de transferencia.\n* **Telecomunicaciones**: Radioenlaces, redes Wi-Fi de alta densidad y telefonía IP.\n* **Sistemas de Seguridad**: CCTV IP con IA, control de accesos biométrico e intrusión.\n* **Refrigeración y Calefacción**: Sistemas de precisión para data centers y climatización comercial/industrial HVAC.\n\n¿Te interesaría recibir asesoramiento específico sobre alguno de estos servicios?"
-  },
-  {
-    keywords: ["fibra", "optica", "optico", "opticos", "tendido", "fusion", "fusiones", "otdr"],
-    response: "Somos especialistas en **infraestructura de Fibra Óptica** de alta capacidad para entornos exigentes:\n\n* **Tendidos de Planta Externa e Interna**: Canalizaciones subterráneas, aéreas, bandejas portacables e infraestructura de ductos.\n* **Fusión por Arco Voltaico**: Contamos con fusionadoras de última generación que garantizan una atenuación de empalme inferior a 0.02 dB.\n* **Certificación y Medición**: Informes detallados de reflectometría óptica mediante instrumental OTDR y Power Meters calibrados.\n* **Mantenimiento Preventivo y Correctivo**: Localización rápida de cortes de fibra y reparación de emergencia 24/7.\n\n¿Estás planificando una interconexión entre sedes o un backbone de fibra?"
-  },
-  {
-    keywords: ["data center", "data centers", "datacenter", "datacenters", "sala tecnica", "salas tecnicas", "rack", "racks", "servidores"],
-    response: "Diseñamos y construimos **Data Centers y Salas Técnicas** de alta disponibilidad bajo estándares internacionales:\n\n* **Diseño e Ingeniería**: Distribución física de racks, optimización del espacio de pasillo frío y pasillo caliente.\n* **Sistemas de Contención**: Cerramientos para aislamiento térmico que reducen el consumo energético hasta un 30%.\n* **Monitoreo Ambiental**: Sensores IP de temperatura, humedad, inundación y gases para alertas tempranas.\n* **Piso Técnico**: Suministro e instalación de placas modulares con recubrimientos antiestáticos y alta capacidad de carga estructural.\n\n¿Tenés en mente el rediseño de tu sala de servidores actual o una obra de cero?"
-  },
-  {
-    keywords: ["energia", "ups", "critica", "bateria", "baterias", "tension", "corte", "cortes", "grupo", "electrogeno", "tablero", "tableros"],
-    response: "Para asegurar la continuidad de tus operaciones críticas, ofrecemos soluciones integrales de **Energía Crítica e Ininterrumpida**:\n\n* **UPS Modulares y Monolíticas**: Sistemas monofásicos y trifásicos desde 1kVA hasta potencias de escala industrial con redundancia N+1 o 2N.\n* **Bancos de Baterías**: Reemplazo de celdas VRLA/Litio, pruebas de descarga y mantenimiento preventivo sistemático.\n* **Tableros de Transferencia Automática (TTA)**: Conmutación segura y automática entre red comercial y grupos electrógenos.\n* **Análisis de Calidad de Energía**: Medición de armónicos, fluctuaciones de tensión y corrección del factor de potencia.\n\n¿Buscás proteger tus servidores o maquinaria industrial contra cortes eléctricos?"
-  },
-  {
-    keywords: ["seguridad", "cctv", "camara", "camaras", "acceso", "accesos", "biometrico", "alarma", "control", "intrusion", "monitoreo"],
-    response: "Implementamos sistemas avanzados de **Seguridad Electrónica y Control de Accesos** corporativos:\n\n* **Sistemas de CCTV IP**: Cámaras de alta resolución con analítica de video por IA, visión nocturna avanzada y grabación centralizada o en nube.\n* **Control de Accesos**: Lectores biométricos, tarjetas de proximidad RFID, reconocimiento facial y barreras vehiculares de alto tránsito.\n* **Sistemas de Intrusión**: Detección perimetral mediante barreras infrarrojas, sensores de movimiento de doble tecnología y paneles conectados a central de alarmas.\n* **Sistemas de Detección e Incendio**: Centrales direccionables, sensores ópticos de humo y barreras lineales en naves industriales.\n\n¿Querés modernizar el control de acceso en tus plantas o el sistema de vigilancia?"
-  },
-  {
-    keywords: ["clima", "climatizacion", "aire", "acondicionado", "precision", "humedad", "temperatura", "frio", "calor", "hvac"],
-    response: "Garantizamos las condiciones óptimas de operación para tu hardware mediante **Climatización de Precisión**:\n\n* **Equipos Técnicos HVAC**: Control estricto de temperatura (+/- 1°C) y humedad relativa (+/- 5%) las 24 horas del día.\n* **Flujo de Aire Optimizado**: Sistemas de inyección inferior (bajo piso técnico) o superior para un enfriamiento focalizado en servidores.\n* **Eficiencia Energética**: Compresores con tecnología Inverter y sistemas de free-cooling para reducir el coeficiente PUE del Data Center.\n* **Servicio Técnico de Guardia**: Cobertura de emergencia por fallas en compresores o pérdida de refrigerante.\n\n¿Necesitás cotizar la climatización de una sala técnica nueva?"
-  },
-  {
-    keywords: ["sede", "sedes", "donde estan", "oficina", "oficinas", "cobertura", "alcanze", "alcance", "mapa", "argentina", "buenos aires", "ramos mejia", "provincias", "donde operan", "interior"],
-    response: "En **Green Working S.A.** tenemos un alcance de cobertura federal y operamos de manera activa en **toda la República Argentina**:\n\n* **Sede Central / HQ**: Ubicada en Humboldt 324, Ramos Mejía, Provincia de Buenos Aires (Zona Oeste GBA).\n* **Nodos de Operación Local**: Contamos con bases operativas, cuadrillas y depósitos logísticos estratégicamente ubicados en:\n  * **Región Centro**: Córdoba y Rosario (Santa Fe).\n  * **Región Cuyo**: Mendoza.\n  * **Región Norte**: San Miguel de Tucumán.\n  * **Región Patagonia / Sur**: Neuquén y Comodoro Rivadavia.\n\nEsto nos permite realizar despliegues de infraestructura complejos en cualquier punto del país, garantizando tiempos de respuesta mínimos e ingeniería de campo local."
-  },
-  {
-    keywords: ["urgencia", "urgencias", "soporte", "mantenimiento", "abono", "poliza", "guardia", "guardias", "24/7", "sla", "horas", "emergencia", "emergencias"],
-    response: "Entendemos que la infraestructura de IT es el motor de tu empresa. Por eso ofrecemos **Servicios de Mantenimiento y Pólizas de Soporte con SLA Garantizado**:\n\n* **Guardias Técnicas 24/7/365**: Ingenieros y técnicos de campo disponibles de forma permanente para incidentes críticos.\n* **Acuerdos de Nivel de Servicio (SLA)**: Tiempos de respuesta física en sitio desde **2 a 4 horas** para abonados corporativos.\n* **Mantenimiento Preventivo Planificado**: Visitas programadas mensuales o bimestrales para limpieza, calibración, pruebas de baterías y control de tableros.\n* **Atención Remota y Help Desk**: Asistencia telefónica inmediata y diagnóstico inicial mediante herramientas de gestión IP.\n\n¿Tu empresa requiere un abono de soporte técnico mensual con SLA estricto?"
-  },
-  {
-    keywords: ["mineria", "minero", "minera", "altura", "puna", "patagonia", "desierto", "petroleo", "gas", "industria", "industrial", "especial", "extrema", "extremas"],
-    response: "Tenemos amplia experiencia en **Proyectos Especiales en Entornos Extremos**, adaptando la ingeniería a condiciones geográficas y climáticas hostiles:\n\n* **Despliegues Mineros**: Infraestructura de telecomunicaciones, shelter técnicos de energía y enlaces de fibra óptica en alta montaña (a más de 4000 msnm) en la Puna argentina (Salta, Jujuy, Catamarca).\n* **Sector Oil & Gas**: Sistemas de comunicación robustos, CCTV a prueba de explosión (ATEX) y gabinetes industriales con protección ambiental extrema en pozos de la Patagonia (Neuquén, Vaca Muerta, Santa Cruz).\n* **Shelters Autónomos**: Contenedores marítimos reacondicionados como salas técnicas móviles con energía solar híbrida y climatización reforzada.\n\nNuestros ingenieros cuentan con certificaciones médicas de altura, cursos de seguridad industrial específicos e instrumental resistente a climas extremos."
-  },
-  {
-    keywords: ["contacto", "telefono", "mail", "correo", "llamar", "hablar", "presupuesto", "cotizacion", "comunicar", "direccion", "humboldt", "mapa", "ubicar", "donde queda"],
-    response: "Podés comunicarte con nuestro departamento de ingeniería de las siguientes formas:\n\n* 📞 **Teléfono de Ingeniería**: [011 3974-0970](tel:+541139740970) (Lunes a Viernes de 8:00 a 18:00 hs).\n* ✉️ **Correo Electrónico**: [info@greenworking.com.ar](mailto:info@greenworking.com.ar) (Las consultas comerciales se responden en menos de 2 horas hábiles).\n* 📍 **Sede Central**: Humboldt 324, Ramos Mejía, Provincia de Buenos Aires (Argentina).\n\nSi lo preferís, también podés completar el **Formulario de Diagnóstico Técnico** que se encuentra aquí al lado, y un ingeniero especialista te contactará de inmediato."
-  },
-  {
-    keywords: ["gracias", "excelente", "buenisimo", "perfecto", "joya", "espectacular", "crack", "genio", "entendido", "ok", "bueno"],
-    response: "¡De nada! Es un placer ayudarte. En Green Working S.A. trabajamos para brindar soluciones tecnológicas de excelencia.\n\nSi tenés alguna otra consulta sobre redes, fibra óptica, UPS, Data Centers o proyectos en el interior del país, no dudes en escribirme. ¡Que tengas un excelente día!"
-  }
-];
-
-const getAIResponse = (userMessage: string): string => {
-  const normalized = userMessage.toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[¿?¡!.,;:]/g, "");
-
-  const words = normalized.split(/\s+/).filter(w => w.length > 0);
-
-  let bestIntent: Intent | null = null;
-  let maxScore = 0;
-
-  for (const intent of KNOWLEDGE_BASE) {
-    let score = 0;
-    for (const keyword of intent.keywords) {
-      const cleanKeyword = keyword.toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-      if (cleanKeyword.includes(" ")) {
-        if (normalized.includes(cleanKeyword)) {
-          score += 3;
-        }
-      } else {
-        for (const word of words) {
-          if (word === cleanKeyword) {
-            score += 2;
-          } else if (word.startsWith(cleanKeyword) || cleanKeyword.startsWith(word)) {
-            if (cleanKeyword.length > 3 && word.length > 3) {
-              score += 1;
-            }
-          }
-        }
-      }
-    }
-
-    if (score > maxScore) {
-      maxScore = score;
-      bestIntent = intent;
-    }
-  }
-
-  if (maxScore > 0 && bestIntent) {
-    return bestIntent.response;
-  }
-
-  return "Aprecio tu consulta. Para brindarte una respuesta precisa, me especializo en temas como:\n\n* 🛠️ **Servicios de Ingeniería** (redes, fibra óptica, Data Centers, UPS modulares, CCTV).\n* 📍 **Sede Central y Cobertura Nacional** (nodos operativos en todo el país).\n* ⚡ **Urgencias 24/7 y Pólizas de Soporte** (SLA de 2 a 4 horas).\n* 🏔️ **Proyectos Extremos** (infraestructura minera en la Puna y Oil & Gas en Patagonia).\n* 📞 **Datos de Contacto Directo** (teléfono, email y ubicación de la sede).\n\n¿Podrías reformular tu pregunta incluyendo algunos de estos términos, o preferís que te proporcione el contacto de un ingeniero comercial?";
-};
+function toHistory(messages: ChatMessage[]): ChatTurn[] {
+  return messages
+    .filter((m) => m.id !== "welcome")
+    .map((m) => ({
+      role: m.sender === "bot" ? "assistant" : "user",
+      content: m.text,
+    }));
+}
 
 const formatChatMessage = (text: string) => {
   return text.split("\n").map((line, i) => {
@@ -184,11 +110,14 @@ export function ContactSection() {
 
   // Chatbot States
   const [chatOpen, setChatOpen] = useState(false);
+  const [assistantMode, setAssistantMode] = useState<
+    "gemini" | "local" | "unknown"
+  >("unknown");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome",
       sender: "bot",
-      text: "¡Hola! Soy el **Asistente de IA de Green Working**. Estoy aquí para responder tus consultas técnicas sobre nuestros servicios de infraestructura, cobertura, urgencias técnicas 24/7 y proyectos especiales.\n\n¿En qué puedo ayudarte hoy?",
+      text: WELCOME_MESSAGE,
       timestamp: new Date()
     }
   ]);
@@ -196,6 +125,35 @@ export function ContactSection() {
   const [isTyping, setIsTyping] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const sendToAssistant = useCallback(async (userText: string, currentMessages: ChatMessage[]) => {
+    setIsTyping(true);
+    try {
+      const history = toHistory(currentMessages);
+      const { reply, mode } = await requestAssistantReply(userText, history);
+      if (mode === "gemini") setAssistantMode("gemini");
+
+      const botMsg: ChatMessage = {
+        id: `bot-${Date.now()}`,
+        sender: "bot",
+        text: reply,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } catch {
+      setAssistantMode("local");
+      const botMsg: ChatMessage = {
+        id: `bot-${Date.now()}`,
+        sender: "bot",
+        text:
+          "Tuve un inconveniente de conexión, pero puedo ayudarte igual. Escribinos por WhatsApp: [+54 011 3370 9716](https://wa.me/541133709716) o contame tu consulta y la reenvío al equipo comercial.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } finally {
+      setIsTyping(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -217,20 +175,10 @@ export function ContactSection() {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMsg]);
-    setIsTyping(true);
-
-    setTimeout(() => {
-      const responseText = getAIResponse(userText);
-      const botMsg: ChatMessage = {
-        id: `bot-${Date.now()}`,
-        sender: "bot",
-        text: responseText,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMsg]);
-      setIsTyping(false);
-    }, 1000);
+    setMessages((prev) => {
+      void sendToAssistant(userText, prev);
+      return [...prev, userMsg];
+    });
   };
 
   const handleQuickChip = (text: string) => {
@@ -245,20 +193,10 @@ export function ContactSection() {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMsg]);
-    setIsTyping(true);
-
-    setTimeout(() => {
-      const responseText = getAIResponse(cleanText);
-      const botMsg: ChatMessage = {
-        id: `bot-${Date.now()}`,
-        sender: "bot",
-        text: responseText,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMsg]);
-      setIsTyping(false);
-    }, 1000);
+    setMessages((prev) => {
+      void sendToAssistant(cleanText, prev);
+      return [...prev, userMsg];
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -310,56 +248,8 @@ export function ContactSection() {
               </h2>
               
               <p className="text-gray-300 text-sm md:text-base leading-relaxed font-light">
-                En <strong>Greenworking S.A.</strong> desarrollamos soluciones de infraestructura tecnológica robusta e integral. Completa el formulario de diagnóstico para coordinar una llamada de evaluación con nuestro equipo de ingenieros o contáctanos de inmediato por nuestros canales directos.
+                En <strong>Greenworking S.A.</strong> desarrollamos soluciones de infraestructura tecnológica robusta e integral. Completa el formulario de diagnóstico para coordinar una evaluación con nuestro equipo de ingenieros. Los canales directos (WhatsApp, email y redes) están disponibles en el pie de página.
               </p>
-            </div>
-
-            {/* Direct contact info - Glassmorphism B2B Cards */}
-            <div className="space-y-4">
-              <a 
-                href="tel:+541139740970"
-                className="flex items-center gap-4 p-5 rounded-2xl border border-slate-800/40 bg-slate-950/40 backdrop-blur-md hover:border-emerald-500/40 hover:bg-emerald-950/10 transition-all duration-300 group relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-              >
-                {/* Slide-in side glow highlight */}
-                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-emerald-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center"></div>
-                <div className="w-11 h-11 rounded-xl bg-emerald-950/60 border border-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Teléfono de Ingeniería</span>
-                  <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">011 3974-0970</span>
-                  <span className="text-[11px] text-gray-400 block font-light mt-0.5">Lunes a Viernes 8:00 a 18:00 hs</span>
-                </div>
-              </a>
-
-              <a 
-                href="mailto:info@greenworking.com.ar"
-                className="flex items-center gap-4 p-5 rounded-2xl border border-slate-800/40 bg-slate-950/40 backdrop-blur-md hover:border-emerald-500/40 hover:bg-emerald-950/10 transition-all duration-300 group relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-              >
-                {/* Slide-in side glow highlight */}
-                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-emerald-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center"></div>
-                <div className="w-11 h-11 rounded-xl bg-emerald-950/60 border border-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Correo Electrónico</span>
-                  <span className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">info@greenworking.com.ar</span>
-                  <span className="text-[11px] text-gray-400 block font-light mt-0.5">Respuesta en menos de 2 horas hábiles</span>
-                </div>
-              </a>
-
-              <div 
-                className="flex items-center gap-4 p-5 rounded-2xl border border-slate-800/40 bg-slate-950/40 backdrop-blur-md relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-              >
-                <div className="w-11 h-11 rounded-xl bg-emerald-950/40 border border-emerald-500/10 text-emerald-400/80 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[9px] text-gray-500 font-mono uppercase tracking-wider block">Sede Central</span>
-                  <span className="text-sm font-bold text-gray-200">Humboldt 324, Ramos Mejía</span>
-                  <span className="text-[11px] text-gray-400 block font-light mt-0.5">Provincia de Buenos Aires, Argentina</span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -496,7 +386,7 @@ export function ContactSection() {
             <div className="relative">
               <Bot className="w-5 h-5 text-white animate-pulse" />
             </div>
-            <span className="text-xs font-bold tracking-wider uppercase font-mono">(hablanos)</span>
+            <span className="text-xs font-bold tracking-wider uppercase font-mono">Hablá con IA</span>
           </button>
         ) : (
           <div className="w-[340px] sm:w-[380px] h-[500px] max-h-[80vh] bg-[#0b141b]/95 backdrop-blur-xl border border-emerald-500/35 rounded-2xl flex flex-col shadow-[0_20px_50px_rgba(4,120,87,0.25)] overflow-hidden animate-scale-in relative">
@@ -514,10 +404,12 @@ export function ContactSection() {
                   <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950 shadow-[0_0_8px_#00c4f9] animate-pulse"></span>
                 </div>
                 <div>
-                  <h4 className="text-[10px] font-bold tracking-wider font-mono text-white uppercase">GW-BOT // INTELLIGENCE</h4>
+                  <h4 className="text-[10px] font-bold tracking-wider font-mono text-white uppercase">GW Asistente IA</h4>
                   <span className="text-[8px] font-mono text-emerald-400 flex items-center gap-1">
                     <span className="w-1 h-1 rounded-full bg-emerald-400"></span>
-                    ONLINE_DASHBOARD // ENCRYPTED
+                    {assistantMode === "gemini"
+                      ? "MOTOR GEMINI ACTIVO"
+                      : "ATENCIÓN COMERCIAL INTELIGENTE"}
                   </span>
                 </div>
               </div>
@@ -601,7 +493,7 @@ export function ContactSection() {
                 type="text" 
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Hacé una pregunta técnica..." 
+                placeholder="Escribí tu consulta..." 
                 className="flex-1 px-3 py-2 border border-slate-800 bg-slate-950/80 rounded-xl text-xs text-white placeholder-gray-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/10"
               />
               <button 

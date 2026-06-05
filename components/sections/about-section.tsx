@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -207,20 +206,11 @@ export function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-12 md:mb-16"
+          className="mb-12 md:mb-16"
         >
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-white leading-tight max-w-xl">
             Nuestro Valor Diferencial
           </h2>
-          <div className="shrink-0">
-            <Image
-              src="/greenworking-soluciones-tecnologicas-logo-green-vf-1.png"
-              alt="Greenworking soluciones tecnológicas"
-              width={200}
-              height={56}
-              className="h-10 md:h-12 w-auto object-contain opacity-95"
-            />
-          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

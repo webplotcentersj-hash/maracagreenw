@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useSpring, useTransform, useReducedMotion } from "framer-motion";
 import {
   Gauge,
   Anchor,
@@ -31,70 +31,191 @@ const projectBullets: { text: string; icon: LucideIcon }[] = [
   { text: "Cableado.", icon: Cable },
 ];
 
-/** Icono del slide: rayo central + flechas circulares de respaldo */
+/** Icono del slide: gira solo con hover; el amarillo se enciende al salir el cursor */
 function EnergyBackupIcon() {
+  const shouldReduceMotion = useReducedMotion();
+  const [isHovering, setIsHovering] = useState(false);
+  const [isCharged, setIsCharged] = useState(false);
+
+  const spinZ = useSpring(0, { stiffness: 100, damping: 20, mass: 0.7 });
+  const orbitSpin = useSpring(0, { stiffness: 80, damping: 18, mass: 0.8 });
+  const scale = useSpring(1, { stiffness: 220, damping: 22 });
+  const outerRingSpin = useTransform(orbitSpin, (v) => v * 0.65);
+  const innerRingSpin = useTransform(spinZ, (v) => -v * 0.9);
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion || !isHovering) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * (180 / Math.PI) + 90;
+
+    spinZ.set(angle);
+    orbitSpin.set(-angle * 1.35);
+    scale.set(1.08);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    spinZ.set(0);
+    orbitSpin.set(0);
+    scale.set(1);
+    setIsCharged(true);
+  };
+
   return (
-    <div className="relative mb-8 w-[5.5rem] h-[5.5rem]">
+    <motion.div
+      className="relative mb-8 w-[6.5rem] h-[6.5rem] md:w-[7.5rem] md:h-[7.5rem] cursor-pointer"
+      style={{ scale: shouldReduceMotion ? 1 : scale }}
+      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <motion.div
-        className="absolute inset-0 rounded-full border-2 border-white/25"
-        animate={{ scale: [1, 1.12, 1], opacity: [0.5, 0.85, 0.5] }}
-        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-[-18%] rounded-full bg-white/20 blur-2xl pointer-events-none"
+        animate={{ opacity: isHovering ? [0.45, 0.7, 0.45] : [0.25, 0.4, 0.25], scale: [0.92, 1.08, 0.92] }}
+        transition={{ duration: isHovering ? 1.6 : 3.2, repeat: Infinity, ease: "easeInOut" }}
       />
+
       <motion.div
-        className="absolute inset-1 rounded-full border border-white/40"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-[-10%] rounded-full bg-amber-300/50 blur-2xl pointer-events-none"
+        initial={{ opacity: 0, scale: 0.75 }}
+        animate={{
+          opacity: isCharged ? [0.55, 0.95, 0.55] : 0,
+          scale: isCharged ? [1, 1.12, 1] : 0.75,
+        }}
+        transition={{
+          opacity: { duration: 0.7, delay: isCharged ? 0.25 : 0 },
+          scale: { duration: 2.4, repeat: isCharged ? Infinity : 0, ease: "easeInOut", delay: isCharged ? 0.25 : 0 },
+        }}
       />
-      <svg viewBox="0 0 88 88" className="relative w-full h-full drop-shadow-lg" aria-hidden>
-        <defs>
-          <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#e0f7fa" />
-          </linearGradient>
-        </defs>
-        {/* Flecha circular superior */}
-        <motion.path
-          d="M44 14 A30 30 0 0 1 68 44"
-          fill="none"
-          stroke="white"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          opacity="0.85"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.2 }}
+
+      <motion.div
+        className="absolute inset-0"
+        style={{ rotate: isHovering && !shouldReduceMotion ? outerRingSpin : 0 }}
+      >
+        <motion.div
+          className="absolute inset-0 rounded-full border-2 border-dashed border-white/35"
+          animate={{ rotate: isCharged ? 360 : isHovering ? 180 : 0 }}
+          transition={{
+            duration: isCharged ? 18 : 0.6,
+            repeat: isCharged ? Infinity : 0,
+            ease: isCharged ? "linear" : "easeOut",
+          }}
         />
-        <path d="M66 38 L72 44 L66 50" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.85" />
-        {/* Flecha circular inferior */}
-        <motion.path
-          d="M44 74 A30 30 0 0 1 20 44"
-          fill="none"
-          stroke="white"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          opacity="0.85"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.35 }}
+      </motion.div>
+
+      <motion.div
+        className="absolute inset-[10%]"
+        style={{ rotate: isHovering && !shouldReduceMotion ? innerRingSpin : 0 }}
+      >
+        <motion.div
+          className="absolute inset-0 rounded-full border border-white/45"
+          animate={{
+            rotate: isCharged ? -360 : 0,
+            boxShadow: isCharged
+              ? "0 0 22px rgba(251, 191, 36, 0.45)"
+              : "0 0 18px rgba(255,255,255,0.12)",
+          }}
+          transition={{
+            rotate: { duration: 12, repeat: isCharged ? Infinity : 0, ease: "linear" },
+            boxShadow: { duration: 0.6, delay: isCharged ? 0.2 : 0 },
+          }}
         />
-        <path d="M22 50 L16 44 L22 38" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.85" />
-        {/* Rayo central */}
-        <motion.path
-          d="M44 26 L36 44 H44 L40 62 L52 42 H44 Z"
-          fill="url(#boltGrad)"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-          initial={{ scale: 0.6, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.15 }}
-          style={{ transformOrigin: "44px 44px" }}
-        />
-      </svg>
-    </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute inset-[22%] rounded-full border-2 backdrop-blur-[2px]"
+        animate={{
+          scale: isHovering ? [1, 1.05, 1] : isCharged ? [1, 1.04, 1] : [1, 1.02, 1],
+          opacity: isCharged ? [0.7, 1, 0.7] : [0.45, 0.65, 0.45],
+          borderColor: isCharged ? "rgba(251, 191, 36, 0.55)" : "rgba(255,255,255,0.2)",
+          backgroundColor: isCharged ? "rgba(251, 191, 36, 0.12)" : "rgba(255,255,255,0.06)",
+        }}
+        transition={{
+          duration: isCharged ? 2.2 : 2.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          borderColor: { duration: 0.5, delay: isCharged ? 0.2 : 0 },
+          backgroundColor: { duration: 0.5, delay: isCharged ? 0.2 : 0 },
+        }}
+      />
+
+      <motion.div
+        className="absolute inset-[24%] flex items-center justify-center"
+        style={{ rotate: isHovering && !shouldReduceMotion ? spinZ : 0 }}
+      >
+        <svg viewBox="0 0 88 88" className="relative w-full h-full" aria-hidden>
+          <defs>
+            <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor={isCharged ? "#fffbeb" : "#ffffff"} />
+              <stop offset="100%" stopColor={isCharged ? "#fbbf24" : "#e0f7fa"} />
+            </linearGradient>
+            <radialGradient id="energyCore" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={isCharged ? "#fef9c3" : "#f8fafc"} stopOpacity={isCharged ? 0.95 : 0.5} />
+              <stop offset="100%" stopColor={isCharged ? "#f59e0b" : "#ffffff"} stopOpacity={isCharged ? 0.35 : 0.08} />
+            </radialGradient>
+          </defs>
+          <motion.path
+            d="M44 10 A34 34 0 0 1 74 44"
+            fill="none"
+            stroke={isCharged ? "#fef08a" : "white"}
+            strokeWidth="2.75"
+            strokeLinecap="round"
+            animate={{ opacity: isCharged ? [0.85, 1, 0.85] : 0.75, pathLength: isCharged ? [0.9, 1, 0.9] : 1 }}
+            transition={{ duration: isCharged ? 2 : 0.4, repeat: isCharged ? Infinity : 0, ease: "easeInOut" }}
+          />
+          <path d="M72 36 L79 44 L72 52" fill="none" stroke={isCharged ? "#fef08a" : "white"} strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" />
+          <motion.path
+            d="M44 78 A34 34 0 0 1 14 44"
+            fill="none"
+            stroke={isCharged ? "#fef08a" : "white"}
+            strokeWidth="2.75"
+            strokeLinecap="round"
+            animate={{ opacity: isCharged ? [0.85, 1, 0.85] : 0.75, pathLength: isCharged ? [0.9, 1, 0.9] : 1 }}
+            transition={{ duration: isCharged ? 2 : 0.4, repeat: isCharged ? Infinity : 0, ease: "easeInOut", delay: 0.2 }}
+          />
+          <path d="M16 52 L9 44 L16 36" fill="none" stroke={isCharged ? "#fef08a" : "white"} strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" />
+          <motion.circle
+            cx="44"
+            cy="44"
+            r="13"
+            fill="url(#energyCore)"
+            stroke={isCharged ? "#fbbf24" : "#e2e8f0"}
+            strokeWidth="1.25"
+            animate={{
+              opacity: isCharged ? 1 : 0.55,
+              filter: isCharged ? "drop-shadow(0 0 10px rgba(251,191,36,0.8))" : "none",
+            }}
+            transition={{ duration: 0.55, delay: isCharged ? 0.25 : 0 }}
+          />
+          <motion.path
+            d="M44 28 L37 44 H44 L41 58 L51 42 H44 Z"
+            fill="url(#boltGrad)"
+            stroke={isCharged ? "#fde047" : "white"}
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+            animate={{
+              opacity: isCharged ? [0.9, 1, 0.9] : 0.8,
+              scale: isCharged ? [1, 1.08, 1] : 1,
+              filter: isCharged ? "drop-shadow(0 0 8px rgba(250,204,21,0.9))" : "none",
+            }}
+            transition={{
+              duration: isCharged ? 1.6 : 0.3,
+              repeat: isCharged ? Infinity : 0,
+              ease: "easeInOut",
+              filter: { duration: 0.5, delay: isCharged ? 0.3 : 0 },
+            }}
+            style={{ transformOrigin: "44px 44px" }}
+          />
+        </svg>
+      </motion.div>
+    </motion.div>
   );
 }
 

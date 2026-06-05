@@ -12,7 +12,7 @@ const greenworkingPosts: NewsCard[] = [
     subcategory: "Cableado Estructurado",
     timeAgo: "Hace 5 min",
     location: "Argentina",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&h=900&fit=crop&q=80",
+    image: "/ss/Imagen25.png",
     gradientColors: ["from-emerald-500/10", "to-green-500/10"],
     content: [
       "En la era de la transformación digital, la infraestructura física de telecomunicaciones es los cimientos sobre los que se sostiene toda la operación de una compañía. El cableado estructurado es el método estandarizado para diseñar e instalar un sistema de cableado integrado que facilite la interconexión de redes de datos, voz y video de manera flexible y escalable.",
@@ -29,7 +29,7 @@ const greenworkingPosts: NewsCard[] = [
     subcategory: "Sistemas UPS",
     timeAgo: "Hace 6 min",
     location: "Argentina",
-    image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=1600&h=900&fit=crop&q=80",
+    image: "/ss/Imagen31.png",
     gradientColors: ["from-amber-500/10", "to-orange-500/10"],
     content: [
       "Los fallos en el suministro eléctrico comercial son una de las principales amenazas silenciosas para las industrias y los centros de cómputo corporativos. Un simple microcorte de energía de pocos milisegundos puede corromper bases de datos críticas, colapsar líneas de montaje automatizadas y dejar fuera de servicio canales de atención al cliente durante horas.",
@@ -46,7 +46,7 @@ const greenworkingPosts: NewsCard[] = [
     subcategory: "Infraestructura Física",
     timeAgo: "Hace 8 min",
     location: "Argentina",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&h=900&fit=crop&q=80",
+    image: "/ss/Imagen43.jpg",
     gradientColors: ["from-blue-500/10", "to-cyan-500/10"],
     content: [
       "El diseño e instalación de un Data Center (Centro de Procesamiento de Datos) moderno va mucho más allá de ensamblar servidores en un gabinete metálico. Se trata de un ecosistema complejo donde la climatización de precisión, la distribución de energía limpia, la extinción de incendios y la seguridad perimetral deben coexistir en perfecto equilibrio.",

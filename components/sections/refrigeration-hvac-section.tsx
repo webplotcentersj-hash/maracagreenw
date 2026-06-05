@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useSpring, useTransform, useReducedMotion } from "framer-motion";
 import {
   Wind,
   Box,
@@ -32,64 +32,172 @@ const fadeUp = {
   }),
 };
 
-/** Icono del slide: copo + flechas circulares frío/calor */
+/** Icono HVAC: anillos en contrarrotación + giro principal según el mouse */
 function HvacCycleIcon() {
+  const iconRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  const spinZ = useSpring(0, { stiffness: 90, damping: 18, mass: 0.8 });
+  const orbitSpin = useSpring(0, { stiffness: 70, damping: 16, mass: 0.9 });
+  const scale = useSpring(1, { stiffness: 200, damping: 20 });
+  const outerRingSpin = useTransform(orbitSpin, (v) => v * 0.65);
+  const innerRingSpin = useTransform(spinZ, (v) => -v * 0.9);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const panel = iconRef.current?.closest("[data-hvac-hero-panel]") as HTMLElement | null;
+      const iconEl = iconRef.current;
+      if (!panel || !iconEl) return;
+
+      const panelRect = panel.getBoundingClientRect();
+      const iconRect = iconEl.getBoundingClientRect();
+      const cx = iconRect.left + iconRect.width / 2;
+      const cy = iconRect.top + iconRect.height / 2;
+
+      const nx = (event.clientX - panelRect.left) / panelRect.width - 0.5;
+      const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * (180 / Math.PI) + 90;
+      const distance = Math.min(
+        1,
+        Math.hypot(event.clientX - cx, event.clientY - cy) / (iconRect.width * 0.85)
+      );
+
+      spinZ.set(angle + nx * 50);
+      orbitSpin.set(-angle * 1.4 + nx * 140);
+      scale.set(1 + distance * 0.1);
+    };
+
+    const reset = () => {
+      spinZ.set(0);
+      orbitSpin.set(0);
+      scale.set(1);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseleave", reset);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseleave", reset);
+    };
+  }, [shouldReduceMotion, spinZ, orbitSpin, scale]);
+
   return (
-    <div className="relative w-[5.5rem] h-[5.5rem] md:w-[6.5rem] md:h-[6.5rem]">
+    <motion.div
+      ref={iconRef}
+      className="relative w-[7.5rem] h-[7.5rem] md:w-[8.5rem] md:h-[8.5rem] cursor-default"
+      style={{ scale: shouldReduceMotion ? 1 : scale }}
+    >
       <motion.div
-        className="absolute inset-0 rounded-full border-2 border-white/25"
-        animate={{ scale: [1, 1.1, 1], opacity: [0.45, 0.8, 0.45] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-[-18%] rounded-full bg-white/25 blur-2xl pointer-events-none"
+        animate={{ opacity: [0.35, 0.65, 0.35], scale: [0.92, 1.08, 0.92] }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute inset-1 rounded-full border border-white/35"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-[-8%] rounded-full bg-sky-300/25 blur-xl pointer-events-none"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
       />
-      <svg viewBox="0 0 88 88" className="relative w-full h-full drop-shadow-lg" aria-hidden>
-        <motion.path
-          d="M44 12 A32 32 0 0 1 72 44"
-          fill="none"
-          stroke="white"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          opacity="0.85"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.15 }}
+
+      <motion.div
+        className="absolute inset-0"
+        style={{ rotate: shouldReduceMotion ? 0 : outerRingSpin }}
+      >
+        <motion.div
+          className="absolute inset-0 rounded-full border-2 border-dashed border-white/35"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
         />
-        <path d="M70 38 L76 44 L70 50" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <motion.path
-          d="M44 76 A32 32 0 0 1 16 44"
-          fill="none"
-          stroke="white"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          opacity="0.85"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3 }}
+      </motion.div>
+
+      <motion.div
+        className="absolute inset-[10%]"
+        style={{ rotate: shouldReduceMotion ? 0 : innerRingSpin }}
+      >
+        <motion.div
+          className="absolute inset-0 rounded-full border border-white/50 shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
         />
-        <path d="M18 50 L12 44 L18 38" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        {/* Copo central */}
-        <g stroke="white" strokeWidth="2" strokeLinecap="round">
-          <line x1="44" y1="28" x2="44" y2="60" />
-          <line x1="28" y1="44" x2="60" y2="44" />
-          <line x1="32.7" y1="32.7" x2="55.3" y2="55.3" />
-          <line x1="55.3" y1="32.7" x2="32.7" y2="55.3" />
-          <line x1="44" y1="28" x2="38" y2="34" />
-          <line x1="44" y1="28" x2="50" y2="34" />
-          <line x1="44" y1="60" x2="38" y2="54" />
-          <line x1="44" y1="60" x2="50" y2="54" />
-          <line x1="28" y1="44" x2="34" y2="38" />
-          <line x1="28" y1="44" x2="34" y2="50" />
-          <line x1="60" y1="44" x2="54" y2="38" />
-          <line x1="60" y1="44" x2="54" y2="50" />
-        </g>
-      </svg>
-    </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute inset-[22%] rounded-full border-2 border-white/20 bg-white/[0.06] backdrop-blur-[2px]"
+        animate={{ scale: [1, 1.06, 1], opacity: [0.5, 0.85, 0.5] }}
+        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
+        className="absolute inset-[26%] flex items-center justify-center"
+        style={{ rotate: shouldReduceMotion ? 0 : spinZ }}
+      >
+        <svg viewBox="0 0 88 88" className="w-full h-full drop-shadow-[0_0_12px_rgba(255,255,255,0.45)]" aria-hidden>
+          <defs>
+            <linearGradient id="hvacStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="100%" stopColor="#d4f4ff" />
+            </linearGradient>
+            <radialGradient id="iceCore" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#f0fbff" stopOpacity="0.95" />
+              <stop offset="55%" stopColor="#bae6fd" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.08" />
+            </radialGradient>
+          </defs>
+          <motion.path
+            d="M44 10 A34 34 0 0 1 74 44"
+            fill="none"
+            stroke="url(#hvacStroke)"
+            strokeWidth="2.75"
+            strokeLinecap="round"
+            opacity="0.95"
+            animate={{ pathLength: [0.85, 1, 0.85] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <path d="M72 36 L79 44 L72 52" fill="none" stroke="white" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" />
+          <motion.path
+            d="M44 78 A34 34 0 0 1 14 44"
+            fill="none"
+            stroke="url(#hvacStroke)"
+            strokeWidth="2.75"
+            strokeLinecap="round"
+            opacity="0.95"
+            animate={{ pathLength: [0.85, 1, 0.85] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+          />
+          <path d="M16 52 L9 44 L16 36" fill="none" stroke="white" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" />
+          <motion.circle
+            cx="44"
+            cy="44"
+            r="13"
+            fill="url(#iceCore)"
+            stroke="#e0f2fe"
+            strokeWidth="1.25"
+            animate={{ opacity: [0.75, 1, 0.75] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.g
+            stroke="#f0f9ff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            fill="none"
+            animate={{ rotate: [0, -360] }}
+            transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+            style={{ transformOrigin: "44px 44px" }}
+          >
+            <line x1="44" y1="31" x2="44" y2="57" />
+            <line x1="31" y1="44" x2="57" y2="44" />
+            <line x1="34.8" y1="34.8" x2="53.2" y2="53.2" />
+            <line x1="53.2" y1="34.8" x2="34.8" y2="53.2" />
+            <line x1="44" y1="31" x2="40" y2="35" />
+            <line x1="44" y1="31" x2="48" y2="35" />
+            <line x1="44" y1="57" x2="40" y2="53" />
+            <line x1="44" y1="57" x2="48" y2="53" />
+          </motion.g>
+          <circle cx="44" cy="44" r="2.5" fill="#ffffff" opacity="0.95" />
+        </svg>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -218,6 +326,7 @@ export function RefrigerationHvacSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="relative flex flex-col items-end justify-center px-8 py-14 lg:py-20 text-right bg-brand-primary overflow-hidden order-1 lg:order-2"
+          data-hvac-hero-panel
         >
           <BrandPaletteAccent variant="strip" className="absolute bottom-0 inset-x-0 z-10" />
           <motion.div
@@ -294,7 +403,7 @@ export function RefrigerationHvacSection() {
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp} custom={0}>
                 <p className="text-xs font-mono uppercase tracking-[0.2em] text-brand-primary mb-4">Componentes y soporte</p>
                 <h3 className="text-xl md:text-2xl font-bold uppercase leading-snug text-white mb-8">
-                  Instalación, reparación y mantenimiento de equipos de refrigeración comerciales e industriales
+                  Mantenimiento, refacciones y monitoreo de sistemas HVAC
                 </h3>
                 <ul className="space-y-2.5">
                   {maintenanceBullets.map((item, i) => (
@@ -304,12 +413,12 @@ export function RefrigerationHvacSection() {
               </motion.div>
             </ScrollReveal>
 
-            <div className="relative grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <GalleryTile
                 src="/ss/Imagen37.jpg"
                 alt="Evaporadores industriales montados en pared"
                 label="Evaporadores"
-                className="min-h-[200px] z-[2]"
+                className="min-h-[200px] sm:min-h-[220px]"
                 index={1}
                 sizes="(max-width: 768px) 90vw, 40vw"
               />
@@ -317,11 +426,11 @@ export function RefrigerationHvacSection() {
                 src="/ss/Imagen36.png"
                 alt="Condensadores en azotea al atardecer"
                 label="Condensadores"
-                className="min-h-[200px] -mt-16 ml-8 lg:ml-12 z-[3] border-brand-primary/20"
+                className="min-h-[200px] sm:min-h-[220px] border-brand-primary/20"
                 index={2}
                 sizes="(max-width: 768px) 90vw, 40vw"
               />
-              <BrandPaletteAccent variant="strip" className="mt-2 rounded-full overflow-hidden opacity-90" />
+              <BrandPaletteAccent variant="strip" className="sm:col-span-2 mt-2 rounded-full overflow-hidden opacity-90" />
             </div>
           </div>
         </div>
